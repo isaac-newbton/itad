@@ -1,0 +1,24 @@
+body.login_page{
+	background-color:$color_bgGreen;
+	min-height:85vh;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+}
+
+.login_form_wrapper{
+	background-color:$color_bgWhite;
+	border-radius:0.75rem;
+	padding:$padding_floatingContainer;
+	margin:0 auto;
+	width:67%;
+	max-width:24rem;
+	box-shadow:0 24px 36px rgba(0,0,0,0.38);
+}
+
+.login_main_image{
+	display:block;
+	width:75%;
+	height:auto;
+	margin:0 auto 30px auto;
+}

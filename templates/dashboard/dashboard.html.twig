@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<div class="dashboard" id="dashboard">
+		<div class="dashboard_top_bar" id="dashboard_top_bar">
+			top bar
+		</div>
+		<div class="dashboard_body" id="dashboard_body">
+			<aside class="dashboard_sidebar" id="dashboard_sidebar">
+				<nav class="dashboard_sidebar_nav">
+					<header>
+						<h1>Menu</h1>
+					</header>
+					<ul>
+						<li>
+							<a href="/">Countries</a>
+						</li>
+						<li class="active">
+							<a href="/">Adulterant Definitions and Thesarus</a>
+						</li>
+						<li>
+							<a href="/">Resources</a>
+						</li>
+					</ul>
+				</nav>
+			</aside>
+			<main class="dashboard_main" id="dashboard_main">
+				{% block content %}content{% endblock %}
+			</main>
+		</div>
+	</div>
+{% endblock %}

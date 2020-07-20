@@ -1,0 +1,28 @@
+html{
+	font-size:$fontSize_default;
+	font-family:$fontFamily_default;
+}
+
+body{
+	font-size:1rem;
+}
+
+button, a.button, input[type="submit"]{
+	background-color: $color_interactiveGreen;
+	color: #ffffff;
+	text-transform:uppercase;
+	text-align:center;
+	display:block;
+	width:100%;
+	padding:0.83rem 0.5rem;
+	border-radius:0.25rem;
+	font-size:1rem;
+
+	&:hover, &:active{
+		background-color: darken($color_interactiveGreen, 5);
+	}
+
+	&:focus{
+		outline: lighten($color_interactiveGreen, 13) solid 2px;
+	}
+}
