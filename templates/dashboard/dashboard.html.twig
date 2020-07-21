@@ -1,6 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+	{% set currentPath = app.request.pathinfo %}
 	<div class="dashboard" id="dashboard">
 		<div class="dashboard_top_bar" id="dashboard_top_bar">
 			top bar
@@ -12,14 +13,14 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li>
-							<a href="/">Countries</a>
+						<li class="{{ currentPath in [path('dashboard')] ? 'active' : '' }}">
+							<a href="{{ path('dashboard') }}">Countries</a>
 						</li>
-						<li class="active">
-							<a href="/">Adulterant Definitions and Thesarus</a>
+						<li class="{{ currentPath in [path('adulterants')] ? 'active' : '' }}">
+							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>
 						</li>
-						<li>
-							<a href="/">Resources</a>
+						<li class="{{ currentPath in [path('resources'), path('resources_articles'), path('resources_publications'), path('resources_presentations')] ? 'active' : '' }}">
+							<a href="{{ path('resources') }}">Resources</a>
 						</li>
 					</ul>
 				</nav>

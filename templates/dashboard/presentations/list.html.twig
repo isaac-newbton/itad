@@ -1,0 +1,33 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Presentations</h1>
+		</header>
+		<div class="presentations_list">
+			<div class="presentation_container">
+				<article>
+					<header>
+						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
+						<h2>Presentation Name</h2>
+					</header>
+					<div class="excerpt">
+						<em>Author Name</em>
+					</div>
+				</article>
+			</div>
+			<div class="presentation_container">
+				<article>
+					<header>
+						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
+						<h2>Presentation Name</h2>
+					</header>
+					<div class="excerpt">
+						<em>Author Name</em>
+					</div>
+				</article>
+			</div>
+		</div>
+	</div>
+{% endblock %}

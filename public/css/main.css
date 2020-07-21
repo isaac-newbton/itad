@@ -12,13 +12,17 @@ button, input[type=submit], input[type=reset] {
   padding: 0;
 }
 
+a {
+  color: #417202;
+}
+
 input:focus {
   outline: none;
 }
 
 html {
   font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -35,6 +39,9 @@ button, a.button, input[type=submit] {
   padding: 0.83rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 1rem;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-weight: bold;
 }
 button:hover, button:active, a.button:hover, a.button:active, input[type=submit]:hover, input[type=submit]:active {
   background-color: #335902;
@@ -69,7 +76,7 @@ button:focus, a.button:focus, input[type=submit]:focus {
 }
 
 .dashboard_top_bar {
-  background-color: #f3f3f3;
+  background-color: #ffffff;
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -134,6 +141,133 @@ button:focus, a.button:focus, input[type=submit]:focus {
 .dashboard_main {
   flex: 1;
   background-color: #F5F9FC;
+}
+
+.dashboard_content {
+  margin: 3rem;
+}
+.dashboard_content .meta {
+  font-size: 0.875rem;
+  color: #999999;
+}
+.dashboard_content header {
+  margin-bottom: 2rem;
+}
+.dashboard_content header h1 {
+  font-size: 2rem;
+  color: #014A22;
+  font-family: "Merriweather", Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+.dashboard_content .resources_link_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.dashboard_content .resources_link_list .resources_link_container {
+  flex: 0 1 315px;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17);
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+}
+.dashboard_content .resources_link_list .resources_link_container .resources_link {
+  display: block;
+  padding: 3rem;
+  text-decoration: none;
+  text-align: center;
+}
+.dashboard_content .resources_link_list .resources_link_container .resources_link img {
+  display: block;
+  margin: 0 auto 3rem auto;
+}
+.dashboard_content .resources_link_list .resources_link_container .resources_link span {
+  color: #014A22;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.dashboard_content .articles_list, .dashboard_content .presentations_list, .dashboard_content .publications_list, .dashboard_content .article, .dashboard_content .adulterants_list_container {
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17);
+  padding: 2rem;
+  max-width: 1020px;
+}
+.dashboard_content .articles_list .article_container header {
+  margin: 0;
+}
+.dashboard_content .articles_list .article_container header h2 {
+  margin: 1rem 0;
+  font-size: 1.25rem;
+  color: #739942;
+}
+.dashboard_content .articles_list .article_container .excerpt {
+  font-size: 1rem;
+}
+.dashboard_content .articles_list .article_container .read_more_container {
+  margin-top: 2rem;
+}
+.dashboard_content .articles_list .article_container .read_more_container .button {
+  display: inline-block;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: initial;
+}
+.dashboard_content .articles_list .article_container:not(:first-child) {
+  margin-top: 2rem;
+  border-top: 1px solid #CECED0;
+  padding-top: 2rem;
+}
+.dashboard_content .presentations_list .presentation_container header {
+  margin: 0;
+}
+.dashboard_content .presentations_list .presentation_container header h2 {
+  margin: 1rem 0;
+  font-size: 1.25rem;
+  color: #739942;
+}
+.dashboard_content .presentations_list .presentation_container .excerpt {
+  font-size: 1rem;
+}
+.dashboard_content .presentations_list .presentation_container:not(:first-child) {
+  margin-top: 1rem;
+  border-top: 1px solid #CECED0;
+  padding-top: 1rem;
+}
+.dashboard_content .publications_list .publication_container header {
+  margin: 0;
+}
+.dashboard_content .publications_list .publication_container header h2 {
+  margin: 1rem 0;
+  font-size: 1.25rem;
+  color: #739942;
+}
+.dashboard_content .publications_list .publication_container .excerpt {
+  font-size: 1rem;
+}
+.dashboard_content .publications_list .publication_container:not(:first-child) {
+  margin-top: 1rem;
+  border-top: 1px solid #CECED0;
+  padding-top: 1rem;
+}
+.dashboard_content .adulterants_list_container header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #CECED0;
+}
+.dashboard_content .adulterants_list_container header a {
+  flex: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  margin-right: 1.5rem;
+}
+.dashboard_content .adulterants_list_container header a.active {
+  border-bottom: 3px solid #739942;
 }
 
 body.login_page {

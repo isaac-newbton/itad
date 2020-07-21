@@ -1,0 +1,29 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Resources</h1>
+		</header>
+		<div class="resources_link_list">
+			<div class="resources_link_container">
+				<a href="{{ path('resources_articles') }}" class="resources_link">
+					<img src="/images/icon-articles.png" alt="Articles icon">
+					<span>Articles</span>
+				</a>
+			</div>
+			<div class="resources_link_container">
+				<a href="{{ path('resources_publications') }}" class="resources_link">
+					<img src="/images/icon-publications.png" alt="Publications icon">
+					<span>Publications</span>
+				</a>
+			</div>
+			<div class="resources_link_container">
+				<a href="{{ path('resources_presentations') }}" class="resources_link">
+					<img src="/images/icon-presentations.png" alt="Presentations icon">
+					<span>Presentations</span>
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

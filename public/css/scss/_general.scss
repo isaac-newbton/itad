@@ -17,6 +17,9 @@ button, a.button, input[type="submit"]{
 	padding:0.83rem 0.5rem;
 	border-radius:0.25rem;
 	font-size:1rem;
+	text-decoration:none;
+	box-sizing:border-box;
+	font-weight:bold;
 
 	&:hover, &:active{
 		background-color: darken($color_interactiveGreen, 5);

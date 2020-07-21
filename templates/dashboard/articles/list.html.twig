@@ -1,0 +1,39 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Articles</h1>
+		</header>
+		<div class="articles_list">
+			<div class="article_container">
+				<article>
+					<header>
+						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
+						<h2>Article Title Here</h2>
+					</header>
+					<div class="excerpt">
+						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt eum commodi unde rerum exercitationem, beatae accusamus dolorum optio, eaque nulla voluptas eos autem quod consectetur at quisquam quae suscipit.
+					</div>
+					<div class="read_more_container">
+						<a href="{{ path('view_article') }}" class="button read_more">Read More</a>
+					</div>
+				</article>
+			</div>
+			<div class="article_container">
+				<article>
+					<header>
+						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
+						<h2>Article Title Here</h2>
+					</header>
+					<div class="excerpt">
+						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi sint esse ipsa, facilis iure ut perspiciatis eos itaque nam necessitatibus quod voluptatem harum, odio officia fugiat in nesciunt minus laboriosam incidunt soluta enim expedita possimus.
+					</div>
+					<div class="read_more_container">
+						<a href="{{ path('view_article') }}" class="button read_more">Read More</a>
+					</div>
+				</article>
+			</div>
+		</div>
+	</div>
+{% endblock %}

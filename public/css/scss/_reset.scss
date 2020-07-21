@@ -12,6 +12,10 @@ button, input[type="submit"], input[type="reset"]{
 	padding:0;
 }
 
+a{
+	color:$color_interactiveGreen;
+}
+
 input:focus{
 	outline:none;
 }

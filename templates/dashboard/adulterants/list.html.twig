@@ -1,0 +1,19 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Adulterant Definitions and Thesaurus</h1>
+		</header>
+		<div class="adulterants_list_container">
+			<header>
+				{% for letter in 'a'|upper..'z'|upper %}
+					<a href="{{ path('adulterants', {letter:letter}) }}" class="{{ letter == activeLetter ? 'active' : '' }}">{{ letter }}</a>
+				{% endfor %}
+			</header>
+			<div class="adulterants_list">
+				Nothing here yet.
+			</div>
+		</div>
+	</div>
+{% endblock %}

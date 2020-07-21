@@ -1,5 +1,5 @@
 .dashboard_top_bar{
-	background-color: $color_bgWhite;
+	background-color: #ffffff;
 	display:block;
 	width:100%;
 	box-sizing:border-box;
@@ -75,4 +75,178 @@
 .dashboard_main{
 	flex:1;
 	background-color:$color_bgLightBlue;
+}
+
+.dashboard_content{
+	margin:3rem;
+
+	.meta{
+		font-size:0.875rem;
+		color:$color_textLightGrey;
+	}
+
+	header{
+		margin-bottom:2rem;
+
+		h1{
+			font-size:2rem;
+			color:$color_bgGreen;
+			font-family: $fontFamily_defaultHeading;
+			font-weight:normal;
+		}
+	}
+
+	.resources_link_list{
+		display:flex;
+		flex-direction:row;
+		flex-wrap:wrap;
+
+		.resources_link_container{
+			flex: 0 1 315px;
+			background:#ffffff;
+			border-radius:0.5rem;
+			box-shadow:0 2px 6px rgba(0,0,0,0.17);
+			margin-right:2rem;
+			margin-bottom:2rem;
+
+			.resources_link{
+				display:block;
+				padding:3rem;
+				text-decoration:none;
+				text-align:center;
+
+				img{
+					display:block;
+					margin:0 auto 3rem auto;
+				}
+
+				span{
+					color:$color_bgGreen;
+					font-weight:bold;
+					font-size:1.5rem;
+				}
+			}
+		}
+	}
+
+	.articles_list, .presentations_list, .publications_list, .article, .adulterants_list_container{
+		background:#ffffff;
+		border-radius:0.5rem;
+		box-shadow:0 2px 6px rgba(0,0,0,0.17);
+		padding:2rem;
+		max-width:1020px;
+	}
+
+	.articles_list{
+
+		.article_container{
+
+			header{
+				margin:0;
+
+				h2{
+					margin:1rem 0;
+					font-size:1.25rem;
+					color:$color_activeGreen;
+				}
+			}
+
+			.excerpt{
+				font-size:1rem;
+			}
+
+			.read_more_container{
+				margin-top:2rem;
+
+				.button{
+					display:inline-block;
+					padding-left: 1.5rem;
+					padding-right:1.5rem;
+					width:initial;
+				}
+			}
+
+			&:not(:first-child){
+				margin-top:2rem;
+				border-top:1px solid $color_inputBorder;
+				padding-top:2rem;
+			}
+		}
+	}
+
+	.presentations_list{
+
+		.presentation_container{
+
+			header{
+				margin:0;
+
+				h2{
+					margin:1rem 0;
+					font-size:1.25rem;
+					color:$color_activeGreen;
+				}
+			}
+
+			.excerpt{
+				font-size:1rem;
+			}
+
+			&:not(:first-child){
+				margin-top:1rem;
+				border-top:1px solid $color_inputBorder;
+				padding-top:1rem;
+			}
+		}
+	}
+
+	.publications_list{
+
+		.publication_container{
+
+			header{
+				margin:0;
+
+				h2{
+					margin:1rem 0;
+					font-size:1.25rem;
+					color:$color_activeGreen;
+				}
+			}
+
+			.excerpt{
+				font-size:1rem;
+			}
+
+			&:not(:first-child){
+				margin-top:1rem;
+				border-top:1px solid $color_inputBorder;
+				padding-top:1rem;
+			}
+		}
+	}
+
+	.adulterants_list_container{
+
+		header{
+			display:flex;
+			flex-direction:row;
+			flex-wrap: wrap;
+			border-bottom:1px solid $color_inputBorder;
+
+			a{
+				flex:0;
+				font-size:1rem;
+				font-weight:bold;
+				text-align:left;
+				text-decoration:none;
+				margin-bottom:1rem;
+				margin-right:1.5rem;
+
+				&.active{
+					border-bottom:3px solid $color_activeGreen;
+				}
+			}
+		}
+	}
 }
