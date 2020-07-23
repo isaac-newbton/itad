@@ -11,6 +11,7 @@ class DashboardController extends AbstractController{
 	 * @Route("/dashboard", name="dashboard")
 	 */
 	public function dashboard(){
+		return $this->redirectToRoute("countries");
 		return $this->render("dashboard/dashboard.html.twig", ['bodyClass'=>'dashboard']);
 	}
 }

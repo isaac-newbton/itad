@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AdulterantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -48,8 +50,14 @@ class Adulterant
      */
     private $thumbnail;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReportLineItem::class, mappedBy="adulterant", orphanRemoval=true)
+     */
+    private $reportLineItems;
+
     public function __construct(){
         $this->uuid = Uuid::uuid4();
+        $this->reportLineItems = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -132,6 +140,37 @@ class Adulterant
     public function setThumbnail(?MediaFile $thumbnail): self
     {
         $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReportLineItem[]
+     */
+    public function getReportLineItems(): Collection
+    {
+        return $this->reportLineItems;
+    }
+
+    public function addReportLineItem(ReportLineItem $reportLineItem): self
+    {
+        if (!$this->reportLineItems->contains($reportLineItem)) {
+            $this->reportLineItems[] = $reportLineItem;
+            $reportLineItem->setAdulterant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportLineItem(ReportLineItem $reportLineItem): self
+    {
+        if ($this->reportLineItems->contains($reportLineItem)) {
+            $this->reportLineItems->removeElement($reportLineItem);
+            // set the owning side to null (unless already changed)
+            if ($reportLineItem->getAdulterant() === $this) {
+                $reportLineItem->setAdulterant(null);
+            }
+        }
 
         return $this;
     }

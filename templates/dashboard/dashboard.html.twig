@@ -2,6 +2,7 @@
 
 {% block body %}
 	{% set currentPath = app.request.pathinfo %}
+	{% set currentRoute = app.request.get('_route') %}
 	<div class="dashboard" id="dashboard">
 		<div class="dashboard_top_bar" id="dashboard_top_bar">
 			top bar
@@ -13,13 +14,13 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li class="{{ currentPath in [path('dashboard')] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country'] ? 'active' : '' }}">
 							<a href="{{ path('dashboard') }}">Countries</a>
 						</li>
-						<li class="{{ currentPath in [path('adulterants')] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['adulterants'] ? 'active' : '' }}">
 							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>
 						</li>
-						<li class="{{ currentPath in [path('resources'), path('resources_articles'), path('resources_publications'), path('resources_presentations')] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['resources', 'resources_articles', 'resources_publications', 'resources_presentations', 'view_article'] ? 'active' : '' }}">
 							<a href="{{ path('resources') }}">Resources</a>
 						</li>
 					</ul>

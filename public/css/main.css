@@ -187,7 +187,7 @@ button:focus, a.button:focus, input[type=submit]:focus {
   font-weight: bold;
   font-size: 1.5rem;
 }
-.dashboard_content .articles_list, .dashboard_content .presentations_list, .dashboard_content .publications_list, .dashboard_content .article, .dashboard_content .adulterants_list_container {
+.dashboard_content .articles_list, .dashboard_content .presentations_list, .dashboard_content .publications_list, .dashboard_content .article, .dashboard_content .adulterants_list_container, .dashboard_content .countries_list, .dashboard_content .add_edit_form, .dashboard_content .country_details {
   background: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.17);
@@ -268,6 +268,13 @@ button:focus, a.button:focus, input[type=submit]:focus {
 }
 .dashboard_content .adulterants_list_container header a.active {
   border-bottom: 3px solid #739942;
+}
+.dashboard_content .countries_list ul {
+  list-style: none;
+  columns: 2;
+}
+.dashboard_content .countries_list ul li {
+  margin-bottom: 1rem;
 }
 
 body.login_page {

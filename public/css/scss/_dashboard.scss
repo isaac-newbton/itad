@@ -129,7 +129,7 @@
 		}
 	}
 
-	.articles_list, .presentations_list, .publications_list, .article, .adulterants_list_container{
+	.articles_list, .presentations_list, .publications_list, .article, .adulterants_list_container, .countries_list, .add_edit_form, .country_details{
 		background:#ffffff;
 		border-radius:0.5rem;
 		box-shadow:0 2px 6px rgba(0,0,0,0.17);
@@ -246,6 +246,18 @@
 				&.active{
 					border-bottom:3px solid $color_activeGreen;
 				}
+			}
+		}
+	}
+
+	.countries_list{
+
+		ul{
+			list-style:none;
+			columns:2;
+
+			li{
+				margin-bottom:1rem;
 			}
 		}
 	}

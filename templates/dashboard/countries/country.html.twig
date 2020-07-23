@@ -1,0 +1,12 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>{{ country.name }}</h1>
+		</header>
+		<div class="country_details">
+			<p>There are no reports for {{ country.name }} yet.</p><a href="{{ path('countries') }}">Back to list</a>
+		</div>
+	</div>
+{% endblock %}

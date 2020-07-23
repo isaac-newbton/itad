@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Doctrine\UuidEncoder;
 use App\Entity\MediaFile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,8 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MediaFileRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    use UuidFinderTrait;
+
+    public function __construct(ManagerRegistry $registry, UuidEncoder $encoder)
     {
+        $this->uuidEncoder = $encoder;
         parent::__construct($registry, MediaFile::class);
     }
 
