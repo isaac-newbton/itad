@@ -26,7 +26,9 @@
 			{% else %}
 				<p>No articles are posted yet.</p>
 			{% endif %}
-			<p><a href="{{ path('add_article') }}" class="button">Add Article</a></p>
+			{% if is_granted('ROLE_ADMIN') %}
+				<p><a href="{{ path('add_article') }}" class="button">Add Article</a></p>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

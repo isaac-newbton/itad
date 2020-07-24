@@ -23,7 +23,9 @@
 			{% else %}
 				<p>No presentations are posted yet.</p>
 			{% endif %}
-			<p><a href="{{ path('add_presentation') }}" class="button">Add Presentation</a></p>
+			{% if is_granted('ROLE_ADMIN') %}
+				<p><a href="{{ path('add_presentation') }}" class="button">Add Presentation</a></p>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

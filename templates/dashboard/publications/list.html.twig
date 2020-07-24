@@ -23,7 +23,9 @@
 			{% else %}
 				<p>No publications are posted yet.</p>
 			{% endif %}
-			<p><a href="{{ path('add_publication') }}" class="button">Add Publication</a></p>
+			{% if is_granted('ROLE_ADMIN') %}
+				<p><a href="{{ path('add_publication') }}" class="button">Add Publication</a></p>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

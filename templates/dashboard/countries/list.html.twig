@@ -15,7 +15,9 @@
 			{% else %}
 				<p>No countries are available at this time.</p>
 			{% endif %}
-			<a href="{{ path('add_country') }}" class="button">Add Country</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('add_country') }}" class="button">Add Country</a>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

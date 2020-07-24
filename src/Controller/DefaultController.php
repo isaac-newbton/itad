@@ -13,14 +13,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class DefaultController extends AbstractController{
 
 	/**
-	 * @Route("/", name="index")
-	 */
-	public function index(){
-
-		return $this->render('login.html.twig', ['bodyClass'=>'login_page']);
-	}
-
-	/**
 	 * @Route("/dev/fileupload", name="dev_fileupload")
 	 */
 	public function fileUpload(Request $request, FileUpload $fileUploadService){

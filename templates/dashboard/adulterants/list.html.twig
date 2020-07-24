@@ -22,7 +22,9 @@
 					<p>No adulterants found matching "{{ activeLetter }}"</p>
 				{% endif %}
 			</div>
-			<a href="{{ path('add_adulterant') }}" class="button">Add Adulterant</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('add_adulterant') }}" class="button">Add Adulterant</a>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

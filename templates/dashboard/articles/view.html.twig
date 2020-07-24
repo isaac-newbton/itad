@@ -12,9 +12,11 @@
 			</article>
 			<footer>
 				<p><a href="{{ path('articles') }}">Back to articles</a></p>
-				<div class="delete_actions">
-					<a href="{{ path('delete_article', {uuid:uuid_encode(article.uuid)}) }}" class="button danger">Delete Article</a>
-				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="delete_actions">
+						<a href="{{ path('delete_article', {uuid:uuid_encode(article.uuid)}) }}" class="button danger">Delete Article</a>
+					</div>
+				{% endif %}
 			</footer>
 		</div>
 	</div>

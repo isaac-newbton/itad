@@ -15,7 +15,9 @@
 			{% else %}
 				<p>No laboratories are available at this time.</p>
 			{% endif %}
-			<a href="{{ path('add_laboratory') }}" class="button">Add Laboratory</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('add_laboratory') }}" class="button">Add Laboratory</a>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

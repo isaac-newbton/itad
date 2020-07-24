@@ -5,16 +5,20 @@
 		<header>
 			<img src="images/columbo-plan-logo.gif" alt="Logo" class="login_main_image">
 		</header>
-		<form action="" method="post" class="login_form">
+		<form method="post" class="login_form">
+			{% if error %}
+				<div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
 			<div class="form_row">
-				<label for="username">Username</label>
-				<input type="email" name="username" id="username">
+				<label for="username">Email</label>
+				<input type="email" name="email" id="username" value="{{ last_username }}" required autofocus>
 			</div>
 			<div class="form_row">
 				<label for="paswword">Password</label>
-				<input type="password" name="password" id="password">
+				<input type="password" name="password" id="password" required>
 			</div>
 			<div class="form_row">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 				<button type="submit">Login</button>
 			</div>
 		</form>

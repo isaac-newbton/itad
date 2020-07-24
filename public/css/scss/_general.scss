@@ -40,3 +40,7 @@ button, a.button, input[type="submit"]{
 .delete_actions{
 	text-align:right;
 }
+
+.error{
+	color: $color_errorRed;
+}

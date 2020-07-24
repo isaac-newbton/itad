@@ -64,6 +64,10 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   text-align: right;
 }
 
+.error {
+  color: #bb0000;
+}
+
 .form_row {
   margin-bottom: 2rem;
 }
@@ -423,6 +427,14 @@ body.login_page {
 .login_form_wrapper button {
   display: block;
   width: 100%;
+}
+.login_form_wrapper .error {
+  text-align: center;
+  background-color: #ffbbbb;
+  border: 2px solid #bb0000;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
 }
 
 .login_main_image {

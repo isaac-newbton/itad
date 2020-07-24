@@ -19,6 +19,15 @@ body.login_page{
 		display:block;
 		width:100%;
 	}
+
+	.error{
+		text-align:center;
+		background-color:lighten($color_errorRed, 50);
+		border:2px solid $color_errorRed;
+		border-radius:0.25rem;
+		margin-bottom:1rem;
+		padding:0.5rem;
+	}
 }
 
 .login_main_image{
