@@ -4,25 +4,21 @@ namespace App\Form;
 
 use App\Entity\YearlyReport;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class YearlyReportType extends AbstractType
+class YearlyReportLaboratoriesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $years = [];
-        for($y = date('Y'); $y >= 1970; $y--){
-            $years[(string)$y] = (string)$y;
-        }
         $builder
-            ->add('year', ChoiceType::class, [
-                'choices'=>$years,
-                'row_attr'=>['class'=>'form_row']
+            ->add('participatingLaboratories', null, [
+                'row_attr'=>['class'=>'form_row'],
+                'expanded'=>true,
+                'choice_attr'=>['class'=>'choice']
             ])
-            ->add('save', SubmitType::class)
+            ->add('Save', SubmitType::class)
         ;
     }
 

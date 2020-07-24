@@ -1,0 +1,13 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Add an Adulterant to {{ report.country.code }}-{{ report.year }}</h1>
+		</header>
+		<div class="add_edit_form">
+			<p>Add an adulterant for the {{ report.year }} report in {{ report.country.name }}.</p>
+			{{ form(form) }}
+		</div>
+	</div>
+{% endblock %}

@@ -193,12 +193,116 @@
 		}
 	}
 
-	.articles_list, .presentations_list, .publications_list, .article, .adulterants_list_container, .countries_list, .add_edit_form, .country_details, .dashboard_content_main_box{
+	.articles_list, .presentations_list, .publications_list, .article, .adulterants_list_container, .countries_list, .add_edit_form, .country_details, .dashboard_content_main_box, .report_details{
 		background:#ffffff;
 		border-radius:0.5rem;
 		box-shadow:0 2px 6px rgba(0,0,0,0.17);
 		padding:2rem;
 		max-width:1020px;
+		box-sizing:border-box
+	}
+
+	.report_details{
+		border-top-right-radius: 0;
+
+		h2{
+			font-size:1.25rem;
+			color:$color_bgGreen;
+		}
+
+		p{
+			color:$color_textLightGrey;
+		}
+
+		.laboratories{
+
+			ul{
+				list-style:none;
+				padding:0;
+				font-size:1rem;
+
+				li{
+					margin-bottom:1rem;
+				}
+			}
+		}
+
+		.adulterants{
+
+			ul{
+				list-style:none;
+				padding:0;
+				font-size:1rem;
+
+				li{
+					display:flex;
+					flex-direction:row;
+					flex-wrap:nowrap;
+					justify-content:flex-end;
+					padding:0.75rem 0;
+					border-top:1px solid $color_inputBorder;
+
+					&:last-child{
+						border-bottom:1px solid $color_inputBorder;
+					}
+
+					> div{
+						display:flex;
+						align-items: center;
+					}
+
+					.adulterant{
+						flex-grow: 1;
+						text-align: left;
+					}
+
+					.percentage{
+						text-align: right;
+						font-weight:bold;
+						color:$color_activeGreen;
+					}
+
+					.delete_actions{
+						padding-left:1rem;
+					}
+				}
+			}
+		}
+	}
+
+	.report_tabs_container{
+		max-width:1020px;
+		display:flex;
+		justify-content:flex-end;
+		margin-top:-2rem;
+
+		.tab{
+			box-sizing: border-box;
+			background-color: $color_interactiveGreen;
+			color:#ffffff;
+			box-shadow:-2px -2px 4px rgba(0,0,0,0.08);
+			padding:1rem 1.5rem;
+
+			&:first-child{
+				border-top-left-radius: 0.5rem;
+			}
+
+			&:last-child{
+				border-top-right-radius: 0.5rem;
+			}
+
+			a{
+				color:#ffffff;
+				text-decoration:none;
+				font-weight:bold;
+			}
+
+			&.active{
+				color:$color_interactiveGreen;
+				background-color: #ffffff;
+				font-weight:bold;
+			}
+		}
 	}
 
 	.articles_list{
@@ -383,4 +487,11 @@
 			}
 		}
 	}
+}
+
+.report_last_submission{
+	font-family:$fontFamily_default;
+	color:$color_textLightGrey;
+	font-size:1rem;
+	padding-left:1.5rem;
 }

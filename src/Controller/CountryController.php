@@ -28,7 +28,11 @@ class CountryController extends AbstractController{
 			return $this->redirectToRoute("countries");
 		}
 
-		return $this->render("dashboard/countries/country.html.twig", ['bodyClass'=>'country', 'country'=>$country]);
+		if(0==count($country->getYearlyReports())){
+			return $this->render("dashboard/countries/country.html.twig", ['bodyClass'=>'country', 'country'=>$country]);
+		}
+
+		return $this->redirectToRoute('report', ['code'=>$country->getCode(), 'year'=>$country->getYearlyReports()[0]->getYear()]);
 	}
 
 	/**

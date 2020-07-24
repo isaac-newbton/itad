@@ -32,6 +32,7 @@ class Country
 
     /**
      * @ORM\OneToMany(targetEntity=YearlyReport::class, mappedBy="country", orphanRemoval=true)
+     * @ORM\OrderBy({"year" = "DESC"})
      */
     private $yearlyReports;
 

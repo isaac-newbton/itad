@@ -31,6 +31,11 @@ class Laboratory
         $this->yearlyReports = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getName(): ?string
     {
         return $this->name;

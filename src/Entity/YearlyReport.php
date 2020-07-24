@@ -28,6 +28,7 @@ class YearlyReport
 
     /**
      * @ORM\OneToMany(targetEntity=ReportLineItem::class, mappedBy="report", orphanRemoval=true)
+     * @ORM\OrderBy({"value" = "DESC"})
      */
     private $reportLineItems;
 

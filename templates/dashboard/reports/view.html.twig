@@ -3,10 +3,72 @@
 {% block content %}
 	<div class="dashboard_content">
 		<header>
-			<h1>{{ report.country.name }}</h1>
+			<h1>{{ report.country.name }} <span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span></h1>
 		</header>
-		<div class="report_details dashboard_content_main_box">
-			report for {{ report.country.code }}-{{ report.year }}
+		<div class="report_tabs_container">
+			{% if reports is not empty %}
+				{% for r in reports %}
+					<div class="tab{{ r.year == report.year ? ' active' : '' }}">
+						{% if r.year == report.year %}
+							{{ r.year }}
+						{% else %}
+							<a href="{{ path('report', {code:country.code, year:r.year}) }}">{{ r.year }}</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="tab add">
+					<a href="{{ path('add_report', {code:country.code}) }}">+Add</a>
+				</div>
+			{% endif %}
+		</div>
+		<div class="report_details">
+			<div class="laboratories">
+				<h2>Participating Laboratories</h2>
+				{% if report.participatingLaboratories is not empty %}
+					<ul>
+						{% for laboratory in report.participatingLaboratories %}
+							<li>{{ laboratory.name }}</li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p>No data yet</p>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('add_laboratory_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Laboratories</a>
+				{% endif %}
+			</div>
+			<div class="adulterants">
+				<h2>Total Adulterants by Year</h2>
+				{% if report.reportLineItems is not empty %}
+					<ul>
+						{% for item in report.reportLineItems %}
+							<li>
+								<div class="adulterant">
+									{{ item.adulterant.name }}
+								</div>
+								<div class="percentage">
+									{{ item.value }}%
+								</div>
+								{% if is_granted('ROLE_ADMIN') %}
+									<div class="delete_actions">
+										<a href="#" class="button danger">Delete</a>
+									</div>
+								{% endif %}
+							</li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p>No data yet</p>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('add_adulterant_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add an Adulterant</a>
+				{% endif %}
+			</div>
+			<div class="downloads">
+
+			</div>
 		</div>
 	</div>
 {% endblock %}

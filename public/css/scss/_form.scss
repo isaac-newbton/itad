@@ -13,7 +13,7 @@
 		display:block;
 		box-sizing: border-box;
 
-		&[type="text"], &[type="email"], &[type="password"], &[type="number"]{
+		&[type="text"], &[type="email"], &[type="password"]{
 			width:100%;
 			margin-bottom:5px;
 			padding:0.67rem 0.33rem;
@@ -23,6 +23,41 @@
 			&:focus{
 				border-color: lighten($color_interactiveGreen, 5);
 			}
+		}
+
+		&[type="number"]{
+			margin-bottom:5px;
+			padding:0.67rem 0.33rem;
+			border-radius:0.25rem;
+			border:2px solid $color_inputBorder;
+
+			&:focus{
+				border-color: lighten($color_interactiveGreen, 5);
+			}
+		}
+
+		&[type="checkbox"]{
+			display:inline-block;
+
+			& + label{
+				display:inline-block;
+				width:initial;
+				font-size:1rem;
+				margin-right:3rem;
+			}
+		}
+	}
+
+	select{
+		display:block;
+		box-sizing: border-box;
+		margin-bottom:5px;
+		padding:0.67rem 0.33rem;
+		border-radius:0.25rem;
+		border:2px solid $color_inputBorder;
+
+		&:focus{
+			border-color: lighten($color_interactiveGreen, 5);
 		}
 	}
 
