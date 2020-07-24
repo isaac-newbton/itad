@@ -1,0 +1,52 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>{{ adulterant.name }}</h1>
+		</header>
+		<div class="adulterant_details_container dashboard_content_main_box">
+			<div class="adulterant_details">
+				<div class="adulterant_image_container">
+
+				</div>
+				<div class="adulterant_properties_container">
+					{% if adulterant.synonyms|trim is not empty %}
+						<div class="adulterant_property">
+							<h2>Synonyms</h2>
+							{{ adulterant.synonyms }}
+						</div>
+					{% endif %}
+					{% if adulterant.spanishName|trim is not empty %}
+						<div class="adulterant_property">
+							<h2>Spanish</h2>
+							{{ adulterant.spanishName }}
+						</div>
+					{% endif %}
+					{% if adulterant.drugClass|trim is not empty %}
+						<div class="adulterant_property">
+							<h2>Drug Class</h2>
+							{{ adulterant.drugClass }}
+						</div>
+					{% endif %}
+					{% if adulterant.occurrenceUsage|trim is not empty %}
+						<div class="adulterant_property">
+							<h2>Occurrence/Usage</h2>
+							{{ adulterant.occurrenceUsage|raw }}
+						</div>
+					{% endif %}
+					{% if adulterant.physiologicalEffect|trim is not empty %}
+						<div class="adulterant_property">
+							<h2>Physiological Effect</h2>
+							{{ adulterant.physiologicalEffect|raw }}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+			<p><a href="{{ path('adulterants', {letter:adulterant.name|first|capitalize}) }}">Back to list</a></p>
+			<div class="delete_actions">
+				<a href="{{ path('delete_adulterant', {uuid: uuid_encode(adulterant.uuid)}) }}" class="button danger">Delete {{ adulterant.name }}</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

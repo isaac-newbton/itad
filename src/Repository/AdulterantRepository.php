@@ -23,6 +23,31 @@ class AdulterantRepository extends ServiceEntityRepository
         parent::__construct($registry, Adulterant::class);
     }
 
+    public function findByFirstLetter($letter){
+        return $this->createQueryBuilder('a')
+            ->where('a.name LIKE :letter')
+            ->orderBy('a.name', 'ASC')
+            ->setParameter('letter', $letter . '%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function search(string $term){
+        return $this->createQueryBuilder('a')
+            ->where('a.name LIKE :term')
+            ->orWhere('a.synonyms LIKE :term')
+            ->orWhere('a.spanishName LIKE :term')
+            ->orWhere('a.drugClass LIKE :term')
+            ->orWhere('a.occurrenceUsage LIKE :term')
+            ->orWhere('a.physiologicalEffect LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Adulterant[] Returns an array of Adulterant objects
     //  */

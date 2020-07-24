@@ -6,28 +6,24 @@
 			<h1>Presentations</h1>
 		</header>
 		<div class="presentations_list">
-			<div class="presentation_container">
-				<article>
-					<header>
-						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
-						<h2>Presentation Name</h2>
-					</header>
-					<div class="excerpt">
-						<em>Author Name</em>
+			{% if presentations is not empty %}
+				{% for presentation in presentations %}
+					<div class="presentation_container">
+						<article>
+							<header>
+								<span class="meta">{{ presentation.dt|date('m/d/Y') }}</span>
+								<h2>{{ presentation.name }}</h2>
+							</header>
+							<div class="excerpt">
+								<em>{{ presentation.author }}</em>
+							</div>
+						</article>
 					</div>
-				</article>
-			</div>
-			<div class="presentation_container">
-				<article>
-					<header>
-						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
-						<h2>Presentation Name</h2>
-					</header>
-					<div class="excerpt">
-						<em>Author Name</em>
-					</div>
-				</article>
-			</div>
+				{% endfor %}
+			{% else %}
+				<p>No presentations are posted yet.</p>
+			{% endif %}
+			<p><a href="{{ path('add_presentation') }}" class="button">Add Presentation</a></p>
 		</div>
 	</div>
 {% endblock %}

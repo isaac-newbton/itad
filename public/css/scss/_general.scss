@@ -12,9 +12,8 @@ button, a.button, input[type="submit"]{
 	color: #ffffff;
 	text-transform:uppercase;
 	text-align:center;
-	display:block;
-	width:100%;
-	padding:0.83rem 0.5rem;
+	display:inline-block;
+	padding:0.83rem 1rem;
 	border-radius:0.25rem;
 	font-size:1rem;
 	text-decoration:none;
@@ -22,10 +21,22 @@ button, a.button, input[type="submit"]{
 	font-weight:bold;
 
 	&:hover, &:active{
-		background-color: darken($color_interactiveGreen, 5);
+		background-color: $color_interactiveBlue;
 	}
 
 	&:focus{
-		outline: lighten($color_interactiveGreen, 13) solid 2px;
+		outline: lighten($color_interactiveBlue, 13) solid 2px;
 	}
+
+	&.danger{
+		background-color:$color_interactiveRed;
+
+		&:hover, &:active{
+			background-color:darken($color_interactiveRed, 10);
+		}
+	}
+}
+
+.delete_actions{
+	text-align:right;
 }

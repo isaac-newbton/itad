@@ -4,18 +4,17 @@
 	<div class="dashboard_content">
 		<div class="article">
 			<header>
-				<h1>Article Title Here</h1>
-				<span class="meta">{{ 'now'|date('m/d/Y g:iA') }}</span>
+				<h1>{{ article.name }}</h1>
+				<span class="meta">{{ article.dt|date('m/d/Y g:iA') }}</span>
 			</header>
 			<article>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ad molestiae unde id tempora, eveniet quia quas placeat ullam autem alias obcaecati iusto quasi perferendis numquam asperiores doloribus! Error aut quisquam vero veniam dicta temporibus aspernatur incidunt necessitatibus, quidem quo culpa alias distinctio id, magni, officiis tempore. Corporis voluptatem quae similique debitis! Amet modi accusamus architecto odio illum, quibusdam eos sapiente necessitatibus quod doloribus explicabo quos consequatur voluptate facilis? Facilis nostrum nesciunt ab vel dolores cum laboriosam sapiente, beatae, quibusdam repellendus sint quam quo ipsum quaerat accusamus optio totam incidunt praesentium voluptate voluptatem repudiandae! Obcaecati quos expedita explicabo perferendis repellendus!</p>
-				<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque accusantium eveniet, dolorem eos culpa ullam possimus fuga expedita dolorum aut. Consequuntur reiciendis iusto illo architecto, nisi expedita fuga hic fugit, eaque nihil similique molestiae perspiciatis. Expedita non aut velit, nulla odio quibusdam laboriosam aliquam vitae libero quasi cupiditate incidunt facilis?</p>
-				<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro, ipsa.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat veritatis illum possimus facere dignissimos fuga tempora obcaecati iusto nesciunt est odio, modi mollitia cupiditate quisquam.</p>
-				<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci harum quae consequatur ea similique earum ad et nulla nostrum sunt, expedita aliquid deleniti laudantium minus. Sunt, iusto autem. Voluptate minus esse laudantium! Vel, reiciendis deleniti, ipsa tempore obcaecati consequuntur magni voluptate corrupti ad rerum quae facere nesciunt ullam tempora maxime assumenda nisi. Molestiae laborum perferendis quae odio similique voluptatum vitae dolorem suscipit sint obcaecati aperiam eum, magni earum provident reprehenderit doloribus accusantium animi! Laudantium dolor expedita deleniti corporis, odio nemo non commodi est excepturi labore, earum deserunt molestias, sequi ratione minus consequuntur. Sapiente doloremque ipsa culpa delectus voluptas nemo tenetur!</p>
+				{{ article.content|raw }}
 			</article>
 			<footer>
-				<a href="{{ path('resources_articles') }}">Back to articles</a>
+				<p><a href="{{ path('articles') }}">Back to articles</a></p>
+				<div class="delete_actions">
+					<a href="{{ path('delete_article', {uuid:uuid_encode(article.uuid)}) }}" class="button danger">Delete Article</a>
+				</div>
 			</footer>
 		</div>
 	</div>

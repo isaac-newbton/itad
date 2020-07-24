@@ -38,7 +38,7 @@ class Adulterant
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $occuranceUsage;
+    private $occurrenceUsage;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -108,14 +108,14 @@ class Adulterant
         return $this;
     }
 
-    public function getOccuranceUsage(): ?string
+    public function getOccurrenceUsage(): ?string
     {
-        return $this->occuranceUsage;
+        return $this->occurrenceUsage;
     }
 
-    public function setOccuranceUsage(?string $occuranceUsage): self
+    public function setOccurrenceUsage(?string $occurrenceUsage): self
     {
-        $this->occuranceUsage = $occuranceUsage;
+        $this->occurrenceUsage = $occurrenceUsage;
 
         return $this;
     }

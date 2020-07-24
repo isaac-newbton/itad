@@ -1,0 +1,119 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% set total = articles|length + adulterants|length + countries|length + publications|length + presentations|length %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Searched "{{ searchTerm }}"</h1>
+		</header>
+		<div class="search_results_container dashboard_content_main_box">
+			<header>
+				<h2>{{ total }} result{{ 1 != total ? 's' : '' }}</h2>
+				{% if 0 < total %}
+					<p>
+						{% if adulterants is not empty %}
+							<a href="#adulterants">{{ adulterants|length }} adulterant{{ 1 != adulterants|length ? 's' : '' }}</a>
+						{% endif %}
+						{% if articles is not empty %}
+							<a href="#articles">{{ articles|length }} article{{ 1 != articles|length ? 's' : '' }}</a>
+						{% endif %}
+						{% if countries is not empty %}
+							<a href="#countries">{{ countries|length }} countr{{ 1 != countries|length ? 'ies' : 'y' }}</a>
+						{% endif %}
+						{% if presentations is not empty %}
+							<a href="#presentations">{{ presentations|length }} presentation{{ 1 != presentations|length ? 's' : '' }}</a>
+						{% endif %}
+						{% if publications is not empty %}
+							<a href="#publications">{{ publications|length }} publication{{ 1 != publications|length ? 's' : '' }}</a>
+						{% endif %}
+					</p>
+				{% endif %}
+			</header>
+			<div class="search_results_list">
+				{% if adulterants is not empty %}
+					<div id="adulterants" class="container">
+						<header>
+							<h3>{{ adulterants|length }} adulterant{{ 1 != adulterants|length ? 's' : '' }}</h3>
+						</header>
+						{% for adulterant in adulterants %}
+							<div class="search_result">
+								<h4>
+									<a href="{{ path('adulterant', {uuid:uuid_encode(adulterant.uuid)}) }}">{{ adulterant.name }}</a>
+								</h4>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if articles is not empty %}
+					<div id="articles" class="container">
+						<header>
+							<h3>{{ articles|length }} article{{ 1 != articles|length ? 's' : '' }}</h3>
+						</header>
+						{% for article in articles %}
+							<div class="search_result">
+								<h4>
+									<a href="{{ path('article', {uuid:uuid_encode(article.uuid)}) }}">{{ article.name }}</a>
+								</h4>
+								<div class="meta">
+									{{ article.dt|date('m/d/Y') }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if countries is not empty %}
+					<div id="countries" class="container">
+						<header>
+							<h3>{{ countries|length }} countr{{ 1 != countries|length ? 'ies' : 'y' }}</h3>
+						</header>
+						{% for country in countries %}
+							<div class="search_result">
+								<h4>
+									<a href="{{ path('country', {code:country.code}) }}">{{ country.name }}</a>
+								</h4>
+								<div class="meta">
+									{{ country.code }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if presentations is not empty %}
+					<div id="presentations" class="container">
+						<header>
+							<h3>{{ presentations|length }} presentation{{ 1 != presentations|length ? 's' : '' }}</h3>
+						</header>
+						{% for presentation in presentations %}
+							<div class="search_result">
+								<h4>
+									{{ presentation.name }}
+								</h4>
+								<div class="meta">
+									{{ presentation.dt|date('m/d/Y') }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if publications is not empty %}
+					<div id="publications" class="container">
+						<header>
+							<h3>{{ publications|length }} publication{{ 1 != publications|length ? 's' : '' }}</h3>
+						</header>
+						{% for publication in publications %}
+							<div class="search_result">
+								<h4>
+									{{ publication.name }}
+								</h4>
+								<div class="meta">
+									{{ publication.dt|date('m/d/Y') }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

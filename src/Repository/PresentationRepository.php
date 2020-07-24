@@ -3,55 +3,50 @@
 namespace App\Repository;
 
 use App\Doctrine\UuidEncoder;
-use App\Entity\Country;
+use App\Entity\Presentation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Country|null find($id, $lockMode = null, $lockVersion = null)
- * @method Country|null findOneBy(array $criteria, array $orderBy = null)
- * @method Country[]    findAll()
- * @method Country[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Presentation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Presentation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Presentation[]    findAll()
+ * @method Presentation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CountryRepository extends ServiceEntityRepository
+class PresentationRepository extends ServiceEntityRepository
 {
     use UuidFinderTrait;
-
     public function __construct(ManagerRegistry $registry, UuidEncoder $encoder)
     {
         $this->uuidEncoder = $encoder;
-        parent::__construct($registry, Country::class);
-    }
-
-    public function findOneByCode(string $code){
-        return $this->findOneBy(['code'=>$code]);
+        parent::__construct($registry, Presentation::class);
     }
 
     public function findAll(){
-        return $this->findBy([], ['name'=>'ASC']);
+        return $this->findBy([], ['dt'=>'DESC']);
     }
 
     public function search(string $term){
         return $this->createQueryBuilder('a')
             ->where('a.name LIKE :term')
-            ->orWhere('a.code LIKE :term')
+            ->orWhere('a.author LIKE :term')
             ->setParameter('term', '%' . $term . '%')
-            ->orderBy('a.name', 'ASC')
+            ->orderBy('a.dt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
 
     // /**
-    //  * @return Country[] Returns an array of Country objects
+    //  * @return Presentation[] Returns an array of Presentation objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -60,10 +55,10 @@ class CountryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Country
+    public function findOneBySomeField($value): ?Presentation
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

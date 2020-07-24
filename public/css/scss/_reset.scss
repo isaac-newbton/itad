@@ -12,6 +12,11 @@ button, input[type="submit"], input[type="reset"]{
 	padding:0;
 }
 
+select{
+	font-family: $fontFamily_default;
+	font-size:1rem;
+}
+
 a{
 	color:$color_interactiveGreen;
 }

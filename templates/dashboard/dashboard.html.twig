@@ -5,7 +5,21 @@
 	{% set currentRoute = app.request.get('_route') %}
 	<div class="dashboard" id="dashboard">
 		<div class="dashboard_top_bar" id="dashboard_top_bar">
-			top bar
+			<div id="search_container">
+				<div id="search_country_container">
+					<select id="select_country">
+						<option value="" selected>Select a Country</option>
+						<option value="UY">Uruguay</option>
+					</select>
+				</div>
+				<div id="search_text_container">
+					<form action="{{ path('search') }}" method="POST">
+						<label for="top_bar_text_search">Search</label>
+						<input type="text" name="term" id="top_bar_text_search" value="{{ searchTerm ?? '' }}" required>
+						<button type="submit">Go</button>
+					</form>
+				</div>
+			</div>
 		</div>
 		<div class="dashboard_body" id="dashboard_body">
 			<aside class="dashboard_sidebar" id="dashboard_sidebar">
@@ -14,13 +28,13 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country', 'report', 'add_report'] ? 'active' : '' }}">
 							<a href="{{ path('dashboard') }}">Countries</a>
 						</li>
-						<li class="{{ currentRoute in ['adulterants'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant'] ? 'active' : '' }}">
 							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>
 						</li>
-						<li class="{{ currentRoute in ['resources', 'resources_articles', 'resources_publications', 'resources_presentations', 'view_article'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['resources', 'articles', 'publications', 'presentations', 'article', 'add_article', 'add_publication', 'add_presentation'] ? 'active' : '' }}">
 							<a href="{{ path('resources') }}">Resources</a>
 						</li>
 					</ul>
@@ -31,4 +45,18 @@
 			</main>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		let countrySelect = document.getElementById('select_country')
+		if(countrySelect){
+			countrySelect.addEventListener('change', function(){
+				let code = countrySelect.options[countrySelect.selectedIndex].value
+				if(0<code.length){
+					window.location.href = `/country/${code}`
+				}
+			})
+		}
+	</script>
 {% endblock %}

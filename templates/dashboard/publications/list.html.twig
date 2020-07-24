@@ -6,28 +6,24 @@
 			<h1>Publications</h1>
 		</header>
 		<div class="publications_list">
-			<div class="publication_container">
-				<article>
-					<header>
-						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
-						<h2>Publication Name</h2>
-					</header>
-					<div class="excerpt">
-						<em>Author Name</em>
+			{% if publications is not empty %}
+				{% for publication in publications %}
+					<div class="publication_container">
+						<article>
+							<header>
+								<span class="meta">{{ publication.dt|date('m/d/Y') }}</span>
+								<h2>{{ publication.name }}</h2>
+							</header>
+							<div class="excerpt">
+								<em>{{ publication.author }}</em>
+							</div>
+						</article>
 					</div>
-				</article>
-			</div>
-			<div class="publication_container">
-				<article>
-					<header>
-						<span class="meta">{{ 'now'|date('m/d/Y') }}</span>
-						<h2>Publication Name</h2>
-					</header>
-					<div class="excerpt">
-						<em>Author Name</em>
-					</div>
-				</article>
-			</div>
+				{% endfor %}
+			{% else %}
+				<p>No publications are posted yet.</p>
+			{% endif %}
+			<p><a href="{{ path('add_publication') }}" class="button">Add Publication</a></p>
 		</div>
 	</div>
 {% endblock %}

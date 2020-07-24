@@ -44,7 +44,7 @@ class Article
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
-        $this->date = new DateTime();
+        $this->dt = new DateTime();
         $this->mediaFiles = new ArrayCollection();
     }
 
@@ -65,12 +65,12 @@ class Article
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDt(): ?\DateTimeInterface
     {
         return $this->dt;
     }
 
-    public function setDate(\DateTimeInterface $dt): self
+    public function setDt(\DateTimeInterface $dt): self
     {
         $this->dt = $dt;
 

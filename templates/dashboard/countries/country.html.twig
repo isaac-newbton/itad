@@ -6,7 +6,12 @@
 			<h1>{{ country.name }}</h1>
 		</header>
 		<div class="country_details">
-			<p>There are no reports for {{ country.name }} yet.</p><a href="{{ path('countries') }}">Back to list</a>
+			<p>There are no reports for {{ country.name }} yet.</p>
+			<p><a href="{{ path('countries') }}">Back to list</a></p>
+			<a href="{{ path('add_report', {code: country.code}) }}" class="button">Add a Report</a>
+			<div class="delete_actions">
+				<a href="{{ path('delete_country', {code: country.code}) }}" class="button danger">Delete {{ country.name }}</a>
+			</div>
 		</div>
 	</div>
 {% endblock %}

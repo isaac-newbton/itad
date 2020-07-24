@@ -25,4 +25,26 @@
 			}
 		}
 	}
+
+	textarea{
+		display:block;
+		box-sizing:border-box;
+		width:100%;
+		max-width:50rem;
+		min-height:6rem;
+		margin-bottom:5px;
+		padding:0.5rem;
+		border-radius:0.25rem;
+		border:2px solid $color_inputBorder;
+
+		&:focus{
+			border-color: lighten($color_interactiveGreen, 5);
+		}
+	}
+
+	.help-text{
+		margin-top:0;
+		font-size:0.75rem;
+		color:$color_textGrey;
+	}
 }

@@ -2,14 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Country;
+use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class CountryType extends AbstractType
+class ArticleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -17,10 +18,13 @@ class CountryType extends AbstractType
             ->add('name', TextType::class, [
                 'row_attr'=>['class'=>'form_row']
             ])
-            ->add('code', TextType::class, [
+            ->add('content', TextareaType::class, [
                 'row_attr'=>['class'=>'form_row'],
-                'help'=>'The 2-letter ISO code used for geolocation. <a href="https://www.iban.com/country-codes" target="_blank">Examples</a>',
-                'help_html'=>true
+                'help'=>'Accepts HTML'
+            ])
+            ->add('excerpt', TextareaType::class, [
+                'row_attr'=>['class'=>'form_row'],
+                'help'=>'A short preview of the beginning of the article. Accepts HTML'
             ])
             ->add('save', SubmitType::class)
         ;
@@ -29,7 +33,7 @@ class CountryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Country::class,
+            'data_class' => Article::class,
         ]);
     }
 }

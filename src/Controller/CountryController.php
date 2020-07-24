@@ -51,4 +51,18 @@ class CountryController extends AbstractController{
 
 		return $this->render("dashboard/countries/add.html.twig", ['bodyClass'=>'add_country', 'form'=>$form->createView()]);
 	}
+
+	/**
+	 * @Route("/country/{code}/delete", name="delete_country")
+	 */
+	function delete(string $code = '', CountryRepository $countryRepository){
+		$country = $countryRepository->findOneByCode($code);
+		if($country){
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($country);
+			$manager->flush();
+		}
+
+		return $this->redirectToRoute("countries");
+	}
 }

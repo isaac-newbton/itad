@@ -2,25 +2,20 @@
 
 namespace App\Form;
 
-use App\Entity\Country;
+use App\Entity\Laboratory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CountryType extends AbstractType
+class LaboratoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', TextType::class, [
                 'row_attr'=>['class'=>'form_row']
-            ])
-            ->add('code', TextType::class, [
-                'row_attr'=>['class'=>'form_row'],
-                'help'=>'The 2-letter ISO code used for geolocation. <a href="https://www.iban.com/country-codes" target="_blank">Examples</a>',
-                'help_html'=>true
             ])
             ->add('save', SubmitType::class)
         ;
@@ -29,7 +24,7 @@ class CountryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Country::class,
+            'data_class' => Laboratory::class,
         ]);
     }
 }

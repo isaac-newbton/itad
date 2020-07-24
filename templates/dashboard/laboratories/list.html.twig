@@ -1,0 +1,21 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Laboratories</h1>
+		</header>
+		<div class="laboratories_list dashboard_content_main_box">
+			{% if laboratories is not empty %}
+				<ul>
+					{% for laboratory in laboratories %}
+						<li><a href="{{ path('laboratory', {uuid:uuid_encode(laboratory.uuid)}) }}" title="{{ laboratory.name }}">{{ laboratory.name }}</a></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<p>No laboratories are available at this time.</p>
+			{% endif %}
+			<a href="{{ path('add_laboratory') }}" class="button">Add Laboratory</a>
+		</div>
+	</div>
+{% endblock %}

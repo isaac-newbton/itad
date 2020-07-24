@@ -5,15 +5,24 @@
 		<header>
 			<h1>Adulterant Definitions and Thesaurus</h1>
 		</header>
-		<div class="adulterants_list_container">
+		<div class="adulterants_list_container dashboard_content_main_box">
 			<header>
 				{% for letter in 'a'|upper..'z'|upper %}
 					<a href="{{ path('adulterants', {letter:letter}) }}" class="{{ letter == activeLetter ? 'active' : '' }}">{{ letter }}</a>
 				{% endfor %}
 			</header>
 			<div class="adulterants_list">
-				Nothing here yet.
+				{% if adulterants is not empty %}
+					<ul>
+						{% for adulterant in adulterants %}
+							<li><a href="{{ path('adulterant', {uuid:uuid_encode(adulterant.uuid)}) }}" title="{{ adulterant.name }}">{{ adulterant.name }}</a></li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p>No adulterants found matching "{{ activeLetter }}"</p>
+				{% endif %}
 			</div>
+			<a href="{{ path('add_adulterant') }}" class="button">Add Adulterant</a>
 		</div>
 	</div>
 {% endblock %}
