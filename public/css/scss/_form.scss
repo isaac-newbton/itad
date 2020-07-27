@@ -9,6 +9,15 @@
 		font-size:0.83rem;
 	}
 
+	ul{
+		list-style:none;
+		padding:0;
+
+		li{
+			color:$color_errorRed;
+		}
+	}
+
 	input{
 		display:block;
 		box-sizing: border-box;
@@ -23,6 +32,13 @@
 			&:focus{
 				border-color: lighten($color_interactiveGreen, 5);
 			}
+		}
+
+		&[type="file"]{
+			margin-bottom:5px;
+			padding:0.67rem 0.33rem;
+			border-top:1px solid $color_inputBorder;
+			border-bottom:1px solid $color_inputBorder;
 		}
 
 		&[type="number"]{

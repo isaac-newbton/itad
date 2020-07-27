@@ -37,11 +37,17 @@ class YearlyReport
      */
     private $participatingLaboratories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FileDownload::class, mappedBy="yearlyReport")
+     */
+    private $fileDownloads;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
         $this->reportLineItems = new ArrayCollection();
         $this->participatingLaboratories = new ArrayCollection();
+        $this->fileDownloads = new ArrayCollection();
     }
 
     public function getYear(): ?int
@@ -120,6 +126,37 @@ class YearlyReport
     {
         if ($this->participatingLaboratories->contains($participatingLaboratory)) {
             $this->participatingLaboratories->removeElement($participatingLaboratory);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FileDownload[]
+     */
+    public function getFileDownloads(): Collection
+    {
+        return $this->fileDownloads;
+    }
+
+    public function addFileDownload(FileDownload $fileDownload): self
+    {
+        if (!$this->fileDownloads->contains($fileDownload)) {
+            $this->fileDownloads[] = $fileDownload;
+            $fileDownload->setYearlyReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFileDownload(FileDownload $fileDownload): self
+    {
+        if ($this->fileDownloads->contains($fileDownload)) {
+            $this->fileDownloads->removeElement($fileDownload);
+            // set the owning side to null (unless already changed)
+            if ($fileDownload->getYearlyReport() === $this) {
+                $fileDownload->setYearlyReport(null);
+            }
         }
 
         return $this;

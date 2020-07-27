@@ -179,4 +179,9 @@ class Adulterant
 
         return $this;
     }
+
+    public function thumbnailImgSrc(): ?string{
+        if(!$this->thumbnail) return null;
+        return str_replace(['/public', '\\'], ['', '/'], $this->thumbnail->getPath());
+    }
 }

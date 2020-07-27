@@ -1,21 +1,26 @@
 <?php
 namespace App\Controller;
 
+use App\Doctrine\UuidEncoder;
 use App\Entity\Country;
+use App\Entity\FileDownload;
 use App\Entity\ReportLineItem;
 use App\Entity\YearlyReport;
 use App\Form\CountryType;
 use App\Form\ReportLineItemType;
+use App\Form\YearlyReportDownloadType;
 use App\Form\YearlyReportLaboratoriesType;
 use App\Form\YearlyReportType;
 use App\Repository\AdulterantRepository;
 use App\Repository\CountryRepository;
 use App\Repository\LaboratoryRepository;
 use App\Repository\YearlyReportRepository;
+use App\Service\FileUpload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ReportController extends AbstractController{
 	/**
@@ -124,5 +129,46 @@ class ReportController extends AbstractController{
 		}
 
 		return $this->render("dashboard/reports/add_adulterant.html.twig", ['bodyClass'=>'add_adulterant_to_report', 'report'=>$report, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/report/{uuid}/add-download", name="add_download_to_report")
+	 */
+	public function addDownload(string $uuid, Request $request, YearlyReportRepository $reportRepository, FileUpload $fileUploadService){
+		$report = $reportRepository->findOneByEncodedUuid($uuid);
+		if(!$report){
+			return $this->redirectToRoute('countries');
+		}
+
+		$download = new FileDownload();
+		$form = $this->createForm(YearlyReportDownloadType::class, $download);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			/**
+			 * @var UploadedFile
+			 */
+			$file = $form->get('file')->getData();
+			if($file){
+				$manager = $this->getDoctrine()->getManager();
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$download->setFile($result);
+
+				$thumbnail = $form->get('thumbnail')->getData();
+				if($thumbnail){
+					$thumbnailResult = $fileUploadService->uploadToMediaFile($thumbnail, $manager);
+					$download->setThumbnail($thumbnailResult);
+				}
+
+				$report->addFileDownload($download);
+
+				$manager->persist($download);
+				$manager->persist($report);
+				$manager->flush();
+			}
+
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/add_download.html.twig", ['bodyClass'=>'add_download_to_report', 'report'=>$report, 'form'=>$form->createView()]);
 	}
 }

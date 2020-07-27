@@ -23,7 +23,35 @@
 				['RU', 700, 1300]
 			]);
 
-			var options = {};
+			{% if countries is not empty %}
+				data = google.visualization.arrayToDataTable([
+					['Country','Reports'],
+					{% for country in countries %}
+					['{{ country.name }}', {{ country.yearlyReports|length }}],
+					{% endfor %}
+				])
+			{% endif %}
+
+			var options = {
+				backgroundColor:{
+					fill: 'F5F9FC'
+				},
+				geochartVersion: 11,
+				datalessRegionColor: '#cccccc',
+				defaultColor: '#e3e3e3',
+				colorAxis: {
+					minValue: 0,
+					maxValue: 1,
+					colors: ['#014822','#6F9541']
+				},
+				legend: 'none',
+				tooltip: {
+					trigger: 'selection',
+					textStyle: {
+						fontName: 'Montserrat'
+					}
+				}
+			};
 
 			var chart = new google.visualization.GeoChart(document.getElementById('world_map'));
 

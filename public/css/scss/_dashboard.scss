@@ -268,6 +268,51 @@
 				}
 			}
 		}
+
+		.downloads{
+
+			.downloads_list_container{
+				display:flex;
+				flex-direction:row;
+				flex-wrap:wrap;
+				justify-content:flex-start;
+
+				.download{
+					flex:0 0 30%;
+					margin-right:1rem;
+					text-decoration:none;
+					margin-bottom:2rem;
+
+					.thumbnail_container{
+						max-width:100%;
+
+						img{
+							display:block;
+							max-width:100%;
+							border:1px solid $color_inputBorder;
+							box-sizing: border-box;
+							padding:1rem;
+						}
+					}
+
+					.details_container{
+						font-weight:bold;
+						color:$color_textGrey;
+						text-decoration: none;
+						line-height:150%;
+						margin-top:0.5rem;
+
+						.cta{
+							display:block;
+							font-size:0.875rem;
+							text-transform: uppercase;
+							margin-top:0.5rem;
+							color:$color_interactiveGreen;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	.report_tabs_container{
@@ -454,6 +499,28 @@
 			}
 		}
 	}
+
+	.adulterant_details{
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+
+		.adulterant_image_container{
+			max-width:20rem;
+
+			img{
+				display:block;
+				max-width:100%;
+				box-sizing: border-box;
+				padding-right:2rem;
+			}
+		}
+
+		.adulterant_properties_container{
+			flex-grow:1;
+		}
+	}
+
 
 	.adulterant_property{
 		padding-top:1.5rem;

@@ -1,5 +1,7 @@
 {% extends "base.html.twig" %}
 
+{% set allCountries = all_countries() %}
+
 {% block body %}
 	{% set currentPath = app.request.pathinfo %}
 	{% set currentRoute = app.request.get('_route') %}
@@ -9,7 +11,11 @@
 				<div id="search_country_container">
 					<select id="select_country">
 						<option value="" selected>Select a Country</option>
-						<option value="UY">Uruguay</option>
+						{% if 0 < allCountries|length %}
+							{% for country in allCountries %}
+								<option value="{{ country.code }}">{{ country.name }}</option>
+							{% endfor %}
+						{% endif %}
 					</select>
 				</div>
 				<div id="search_text_container">
@@ -29,7 +35,7 @@
 					</header>
 					<ul>
 						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country', 'report', 'add_report'] ? 'active' : '' }}">
-							<a href="{{ path('dashboard') }}">Countries</a>
+							<a href="{{ path('countries') }}">Countries</a>
 						</li>
 						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant'] ? 'active' : '' }}">
 							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>

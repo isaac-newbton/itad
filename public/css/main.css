@@ -78,6 +78,13 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   color: #42454A;
   font-size: 0.83rem;
 }
+.form_row ul {
+  list-style: none;
+  padding: 0;
+}
+.form_row ul li {
+  color: #bb0000;
+}
 .form_row input {
   display: block;
   box-sizing: border-box;
@@ -91,6 +98,12 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
 }
 .form_row input[type=text]:focus, .form_row input[type=email]:focus, .form_row input[type=password]:focus {
   border-color: #4f8b02;
+}
+.form_row input[type=file] {
+  margin-bottom: 5px;
+  padding: 0.67rem 0.33rem;
+  border-top: 1px solid #CECED0;
+  border-bottom: 1px solid #CECED0;
 }
 .form_row input[type=number] {
   margin-bottom: 5px;
@@ -365,6 +378,42 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
 .dashboard_content .report_details .adulterants ul li .delete_actions {
   padding-left: 1rem;
 }
+.dashboard_content .report_details .downloads .downloads_list_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.dashboard_content .report_details .downloads .downloads_list_container .download {
+  flex: 0 0 30%;
+  margin-right: 1rem;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+.dashboard_content .report_details .downloads .downloads_list_container .download .thumbnail_container {
+  max-width: 100%;
+}
+.dashboard_content .report_details .downloads .downloads_list_container .download .thumbnail_container img {
+  display: block;
+  max-width: 100%;
+  border: 1px solid #CECED0;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+.dashboard_content .report_details .downloads .downloads_list_container .download .details_container {
+  font-weight: bold;
+  color: #42454A;
+  text-decoration: none;
+  line-height: 150%;
+  margin-top: 0.5rem;
+}
+.dashboard_content .report_details .downloads .downloads_list_container .download .details_container .cta {
+  display: block;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  color: #417202;
+}
 .dashboard_content .report_tabs_container {
   max-width: 1020px;
   display: flex;
@@ -494,6 +543,23 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   text-decoration: none;
   color: #42454A;
 }
+.dashboard_content .adulterant_details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.dashboard_content .adulterant_details .adulterant_image_container {
+  max-width: 20rem;
+}
+.dashboard_content .adulterant_details .adulterant_image_container img {
+  display: block;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-right: 2rem;
+}
+.dashboard_content .adulterant_details .adulterant_properties_container {
+  flex-grow: 1;
+}
 .dashboard_content .adulterant_property {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -558,6 +624,10 @@ body.login_page {
   width: 75%;
   height: auto;
   margin: 0 auto 30px auto;
+}
+
+g.google-visualization-tooltip {
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
 }
 
 /*# sourceMappingURL=main.css.map */

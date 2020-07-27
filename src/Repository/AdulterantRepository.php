@@ -23,6 +23,10 @@ class AdulterantRepository extends ServiceEntityRepository
         parent::__construct($registry, Adulterant::class);
     }
 
+    public function findAll(){
+        return $this->findBy([], ['name'=>'ASC']);
+    }
+
     public function findByFirstLetter($letter){
         return $this->createQueryBuilder('a')
             ->where('a.name LIKE :letter')

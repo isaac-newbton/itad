@@ -1,0 +1,13 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>{{ adulterant.name }} Thumbnail</h1>
+		</header>
+		<div class="add_edit_form dashboard_content_main_box">
+			<p>Add a thumbnail image for {{ adulterant.name }}.</p>
+			{{ form(form) }}
+		</div>
+	</div>
+{% endblock %}

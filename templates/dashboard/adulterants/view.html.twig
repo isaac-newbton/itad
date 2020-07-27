@@ -8,7 +8,13 @@
 		<div class="adulterant_details_container dashboard_content_main_box">
 			<div class="adulterant_details">
 				<div class="adulterant_image_container">
-
+					{% if adulterant.thumbnail %}
+						<img src="{{ adulterant.thumbnailImgSrc }}" alt="{{ adulterant.name }}">
+					{% else %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('add_adulterant_thumbnail', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">+Image</a>
+						{% endif %}
+					{% endif %}
 				</div>
 				<div class="adulterant_properties_container">
 					{% if adulterant.synonyms|trim is not empty %}

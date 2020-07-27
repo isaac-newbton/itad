@@ -67,7 +67,31 @@
 				{% endif %}
 			</div>
 			<div class="downloads">
-
+				{% if report.fileDownloads is not empty %}
+					<h2>Downloads</h2>
+					<div class="downloads_list_container">
+						{% for download in report.fileDownloads %}
+							<a class="download" href="{{ download.href }}" target="_blank" download>
+								<div class="thumbnail_container">
+									{% if download.thumbnail %}
+										<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file.name }}" class="thumbnail">
+									{% endif %}
+								</div>
+								<div class="details_container">
+									{{ download.file.name }}
+									<div class="cta">
+										Download PDF
+									</div>
+								</div>
+							</a>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<p>
+						<a href="{{ path('add_download_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add a Download</a>
+					</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>

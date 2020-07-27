@@ -15,12 +15,12 @@ class DashboardController extends AbstractController{
 	/**
 	 * @Route("/dashboard", name="dashboard")
 	 */
-	public function dashboard(){
+	public function dashboard(CountryRepository $countryRepository){
 		$googleApiKey = $_ENV['GOOGLE_API_KEY'];
 		if(empty($googleApiKey) || ''==trim($googleApiKey)){
 			return $this->redirectToRoute("countries");
 		}
-		return $this->render("dashboard/map.html.twig", ['bodyClass'=>'world_map', 'googleApiKey'=>$googleApiKey]);
+		return $this->render("dashboard/map.html.twig", ['bodyClass'=>'world_map', 'googleApiKey'=>$googleApiKey, 'countries'=>$countryRepository->findAll()]);
 	}
 
 	/**
