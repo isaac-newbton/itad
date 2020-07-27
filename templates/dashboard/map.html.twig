@@ -1,0 +1,35 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div id="world_map"></div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		google.charts.load('current', {
+			'packages':['geochart'],
+			'mapsApiKey':'{{ googleApiKey }}'
+		});
+		google.charts.setOnLoadCallback(drawRegionsMap);
+		function drawRegionsMap() {
+			var data = google.visualization.arrayToDataTable([
+				['Country', 'Reports', 'Chemicals'],
+				['Germany', 200, 225],
+				['United States', 300, 100],
+				['Brazil', 400, 65],
+				['Canada', 500, 40],
+				['France', 600, 1200],
+				['RU', 700, 1300]
+			]);
+
+			var options = {};
+
+			var chart = new google.visualization.GeoChart(document.getElementById('world_map'));
+
+			chart.draw(data, options);
+		}
+	</script>
+
+	{{ parent() }}
+{% endblock %}
