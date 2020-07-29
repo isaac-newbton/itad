@@ -29,7 +29,9 @@
 			{% endif %}
 		</div>
 		<div class="report_details">
-			<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
+			{% endif %}
 			<div class="laboratories">
 				<h2>Participating Laboratories</h2>
 				{% if report.participatingLaboratories is not empty %}
