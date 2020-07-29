@@ -2,14 +2,20 @@
 
 {% block content %}
 	<div class="dashboard_content">
-		<header>
-			<h1>{{ country.name }}</h1>
+		<header class="country_header">
+			{% if country.flagImgSrc %}
+				<img src="{{ country.flagImgSrc }}" alt="{{ country.name }}">
+			{% endif %}
+			<h1>
+				{{ country.name }}
+			</h1>
 		</header>
 		<div class="country_details">
 			<p>There are no reports for {{ country.name }} yet.</p>
 			<p><a href="{{ path('countries') }}">Back to list</a></p>
 			{% if is_granted('ROLE_ADMIN') %}
 				<a href="{{ path('add_report', {code: country.code}) }}" class="button">Add a Report</a>
+				<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
 				<div class="delete_actions">
 					<a href="{{ path('delete_country', {code: country.code}) }}" class="button danger">Delete {{ country.name }}</a>
 				</div>

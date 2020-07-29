@@ -2,9 +2,12 @@
 namespace App\Controller;
 
 use App\Entity\Country;
+use App\Form\CountryFlagType;
 use App\Form\CountryType;
 use App\Repository\CountryRepository;
+use App\Service\FileUpload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,5 +71,35 @@ class CountryController extends AbstractController{
 		}
 
 		return $this->redirectToRoute("countries");
+	}
+
+	/**
+	 * @Route("/country/{code}/add-flag", name="add_flag")
+	 */
+	function addFlag(string $code, Request $request, CountryRepository $countryRepository, FileUpload $fileUploadService){
+		$country = $countryRepository->findOneByCode($code);
+		if(!$country){
+			return $this->redirectToRoute("countries");
+		}
+
+		$form = $this->createForm(CountryFlagType::class, $country);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			/**
+			 * @var UploadedFile
+			 */
+			$file = $form->get('file')->getData();
+			if($file){
+				$manager = $this->getDoctrine()->getManager();
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$country->setFlag($result);
+				$manager->persist($country);
+				$manager->flush();
+			}
+
+			return $this->redirectToRoute('country', ['code'=>$country->getCode()]);
+		}
+
+		return $this->render("dashboard/countries/add_flag.html.twig", ['bodyClass'=>'country_add_flag', 'country'=>$country, 'form'=>$form->createView()]);
 	}
 }

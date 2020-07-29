@@ -15,6 +15,13 @@
 	flex-wrap:wrap;
 }
 
+#logout_container{
+	font-size:0.875rem;
+	flex:1;
+	display:flex;
+	align-content: center;
+}
+
 #search_country_container{
 	margin-right:2rem;
 
@@ -157,6 +164,20 @@
 			color:$color_bgGreen;
 			font-family: $fontFamily_defaultHeading;
 			font-weight:normal;
+		}
+	}
+
+	.country_header{
+		display:flex;
+		align-content:center;
+
+		h1{
+			margin:0.5rem 0 0 0;
+		}
+
+		img{
+			max-height:4rem;
+			margin-right:1rem;
 		}
 	}
 
@@ -308,6 +329,7 @@
 							text-transform: uppercase;
 							margin-top:0.5rem;
 							color:$color_interactiveGreen;
+							text-decoration:none;
 						}
 					}
 				}

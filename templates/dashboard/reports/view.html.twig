@@ -2,8 +2,13 @@
 
 {% block content %}
 	<div class="dashboard_content">
-		<header>
-			<h1>{{ report.country.name }} <span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span></h1>
+		<header class="country_header">
+			{% if country.flagImgSrc %}
+				<img src="{{ country.flagImgSrc }}" alt="{{ country.name }}">
+			{% endif %}
+			<h1>
+				{{ country.name }} <span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span>
+			</h1>
 		</header>
 		<div class="report_tabs_container">
 			{% if reports is not empty %}
@@ -24,6 +29,7 @@
 			{% endif %}
 		</div>
 		<div class="report_details">
+			<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
 			<div class="laboratories">
 				<h2>Participating Laboratories</h2>
 				{% if report.participatingLaboratories is not empty %}
@@ -71,19 +77,21 @@
 					<h2>Downloads</h2>
 					<div class="downloads_list_container">
 						{% for download in report.fileDownloads %}
-							<a class="download" href="{{ download.href }}" target="_blank" download>
+							<div class="download" href="{{ download.href }}" target="_blank" download>
 								<div class="thumbnail_container">
 									{% if download.thumbnail %}
-										<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file.name }}" class="thumbnail">
+										<a href="{{ download.thumbnailImgSrc }}" target="_blank">
+											<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file.name }}" class="thumbnail">
+										</a>
 									{% endif %}
 								</div>
 								<div class="details_container">
 									{{ download.file.name }}
-									<div class="cta">
+									<a class="cta" href="{{ download.href }}" target="_blank" download>
 										Download PDF
-									</div>
+									</a>
 								</div>
-							</a>
+							</div>
 						{% endfor %}
 					</div>
 				{% endif %}
@@ -93,6 +101,11 @@
 					</p>
 				{% endif %}
 			</div>
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="delete_actions">
+					<a href="{{ path('delete_report', {uuid:uuid_encode(report.uuid)}) }}" class="button danger">Delete Report</a>
+				</div>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

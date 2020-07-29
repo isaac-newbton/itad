@@ -18,6 +18,11 @@ class ArticleType extends AbstractType
             ->add('name', TextType::class, [
                 'row_attr'=>['class'=>'form_row']
             ])
+            ->add('externalUrl', TextType::class, [
+                'row_attr'=>['class'=>'form_row'],
+                'required'=>false,
+                'help'=>'If this links to an external resource, its content will not be rendered (but excerpt will).'
+            ])
             ->add('content', TextareaType::class, [
                 'row_attr'=>['class'=>'form_row'],
                 'help'=>'Accepts HTML'

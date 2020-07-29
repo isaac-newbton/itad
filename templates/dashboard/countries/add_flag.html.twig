@@ -1,0 +1,13 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Add a flag for {{ country.name }}</h1>
+		</header>
+		<div class="add_edit_form">
+			<p>Upload an image file.</p>
+			{{ form(form) }}
+		</div>
+	</div>
+{% endblock %}

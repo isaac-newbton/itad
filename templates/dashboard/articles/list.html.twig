@@ -18,7 +18,10 @@
 								{{ article.excerpt }}
 							</div>
 							<div class="read_more_container">
-								<a href="{{ path('article', {uuid:uuid_encode(article.uuid)}) }}" class="button read_more">Read More</a>
+								<a href="{{ article.externalUrl ?? path('article', {uuid:uuid_encode(article.uuid)}) }}" class="button read_more" target="{{ article.externalUrl ? '_blank' : '_self' }}">Read More</a>
+								{% if is_granted('ROLE_ADMIN') %}
+									<a href="{{ path('edit_article', {uuid:uuid_encode(article.uuid)}) }}" class="button">Edit</a></p>
+								{% endif %}
 							</div>
 						</article>
 					</div>

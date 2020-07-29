@@ -41,6 +41,11 @@ class Article
      */
     private $mediaFiles;
 
+    /**
+     * @ORM\Column(type="string", length=2048, nullable=true)
+     */
+    private $externalUrl;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -123,6 +128,18 @@ class Article
         if ($this->mediaFiles->contains($mediaFile)) {
             $this->mediaFiles->removeElement($mediaFile);
         }
+
+        return $this;
+    }
+
+    public function getExternalUrl(): ?string
+    {
+        return $this->externalUrl;
+    }
+
+    public function setExternalUrl(?string $externalUrl): self
+    {
+        $this->externalUrl = $externalUrl;
 
         return $this;
     }

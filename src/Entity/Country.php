@@ -108,4 +108,9 @@ class Country
 
         return $this;
     }
+
+    public function flagImgSrc(): ?string{
+        if(!$this->flag) return null;
+        return str_replace(['/public', '\\'], ['', '/'], $this->flag->getPath());
+    }
 }

@@ -63,6 +63,29 @@ class ResourcesController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/resources/article/{uuid}/edit", name="edit_article")
+	 */
+	public function editArticle(string $uuid, Request $request, ArticleRepository $articleRepository){
+		$article = $articleRepository->findOneByEncodedUuid($uuid);
+		if(!$article){
+			return $this->redirectToRoute('articles');
+		}
+		$form = $this->createForm(ArticleType::class, $article);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$article = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($article);
+			$manager->flush();
+
+			return $this->redirectToRoute(($article->getExternalUrl() ? 'articles' : 'article'), ['uuid'=>$uuid] );
+		}
+
+		return $this->render("dashboard/articles/add.html.twig", ['bodyClass'=>'add_article', 'form'=>$form->createView()]);
+	}
+
+	/**
 	 * @Route("/resources/article/{uuid}/delete", name="delete_article")
 	 */
 	public function deleteArticle(string $uuid, ArticleRepository $articleRepository){

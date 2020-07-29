@@ -8,6 +8,11 @@
 	<div class="dashboard" id="dashboard">
 		<div class="dashboard_top_bar" id="dashboard_top_bar">
 			<div id="search_container">
+				{% if app.user %}
+					<div id="logout_container">
+						<a href="{{ path('logout') }}" class="button">Log out</a>
+					</div>
+				{% endif %}
 				<div id="search_country_container">
 					<select id="select_country">
 						<option value="" selected>Select a Country</option>
@@ -34,7 +39,7 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country', 'report', 'add_report'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country', 'report', 'add_report', 'add_flag'] ? 'active' : '' }}">
 							<a href="{{ path('countries') }}">Countries</a>
 						</li>
 						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant'] ? 'active' : '' }}">

@@ -171,4 +171,26 @@ class ReportController extends AbstractController{
 
 		return $this->render("dashboard/reports/add_download.html.twig", ['bodyClass'=>'add_download_to_report', 'report'=>$report, 'form'=>$form->createView()]);
 	}
+
+	/**
+	 * @Route("/report/{uuid}/delete", name="delete_report")
+	 */
+	function delete(string $uuid, YearlyReportRepository $reportRepository){
+		$report = $reportRepository->findOneByEncodedUuid($uuid);
+		if($report){
+			$country = $report->getCountry();
+			$manager = $this->getDoctrine()->getManager();
+			$downloads = $report->getFileDownloads();
+			if($downloads){
+				foreach($downloads as $download){
+					$manager->remove($download);
+				}
+			}
+			$manager->remove($report);
+			$manager->flush();
+			return $this->redirectToRoute("country", ['code'=>$country->getCode()]);
+		}
+
+		return $this->redirectToRoute("countries");
+	}
 }

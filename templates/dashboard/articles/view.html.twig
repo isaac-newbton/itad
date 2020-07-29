@@ -13,6 +13,9 @@
 			<footer>
 				<p><a href="{{ path('articles') }}">Back to articles</a></p>
 				{% if is_granted('ROLE_ADMIN') %}
+					<p>
+						<a href="{{ path('edit_article', {uuid:uuid_encode(article.uuid)}) }}" class="button">Edit</a>
+					</p>
 					<div class="delete_actions">
 						<a href="{{ path('delete_article', {uuid:uuid_encode(article.uuid)}) }}" class="button danger">Delete Article</a>
 					</div>

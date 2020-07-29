@@ -1,18 +1,29 @@
 body.login_page{
 	background-color:$color_bgGreen;
-	min-height:85vh;
+	min-height:95vh;
 	display:flex;
 	flex-direction:column;
 	justify-content:center;
+
+	footer{
+		color:#ffffff;
+		font-size:0.75rem;
+		width:85%;
+		margin:3rem auto 0 auto;
+
+		a{
+			color:lighten($color_activeGreen, 25);
+		}
+	}
 }
 
 .login_form_wrapper{
-	background-color:$color_bgWhite;
+	background-color:#ffffff;
 	border-radius:0.75rem;
 	padding:$padding_floatingContainer;
 	margin:0 auto;
 	width:67%;
-	max-width:24rem;
+	max-width:32rem;
 	box-shadow:0 24px 36px rgba(0,0,0,0.38);
 
 	button{
@@ -31,8 +42,16 @@ body.login_page{
 }
 
 .login_main_image{
-	display:block;
-	width:75%;
-	height:auto;
-	margin:0 auto 30px auto;
+	display:flex;
+	flex-direction:row;
+	flex-wrap:nowrap;
+	align-content: center;
+	justify-content: space-around;
+
+	img{
+		display:block;
+		width:50%;
+		height:auto;
+		object-fit:contain;
+	}
 }

@@ -171,6 +171,13 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   flex-wrap: wrap;
 }
 
+#logout_container {
+  font-size: 0.875rem;
+  flex: 1;
+  display: flex;
+  align-content: center;
+}
+
 #search_country_container {
   margin-right: 2rem;
 }
@@ -291,6 +298,17 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   color: #014A22;
   font-family: "Merriweather", Arial, Helvetica, sans-serif;
   font-weight: normal;
+}
+.dashboard_content .country_header {
+  display: flex;
+  align-content: center;
+}
+.dashboard_content .country_header h1 {
+  margin: 0.5rem 0 0 0;
+}
+.dashboard_content .country_header img {
+  max-height: 4rem;
+  margin-right: 1rem;
 }
 .dashboard_content .resources_link_list {
   display: flex;
@@ -413,6 +431,7 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   text-transform: uppercase;
   margin-top: 0.5rem;
   color: #417202;
+  text-decoration: none;
 }
 .dashboard_content .report_tabs_container {
   max-width: 1020px;
@@ -591,19 +610,28 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
 
 body.login_page {
   background-color: #014A22;
-  min-height: 85vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+body.login_page footer {
+  color: #ffffff;
+  font-size: 0.75rem;
+  width: 85%;
+  margin: 3rem auto 0 auto;
+}
+body.login_page footer a {
+  color: #b1ce8d;
+}
 
 .login_form_wrapper {
-  background-color: #f3f3f3;
+  background-color: #ffffff;
   border-radius: 0.75rem;
   padding: 30px;
   margin: 0 auto;
   width: 67%;
-  max-width: 24rem;
+  max-width: 32rem;
   box-shadow: 0 24px 36px rgba(0, 0, 0, 0.38);
 }
 .login_form_wrapper button {
@@ -620,10 +648,17 @@ body.login_page {
 }
 
 .login_main_image {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: space-around;
+}
+.login_main_image img {
   display: block;
-  width: 75%;
+  width: 50%;
   height: auto;
-  margin: 0 auto 30px auto;
+  object-fit: contain;
 }
 
 g.google-visualization-tooltip {
