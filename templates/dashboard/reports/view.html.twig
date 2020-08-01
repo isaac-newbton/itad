@@ -7,9 +7,18 @@
 				<img src="{{ country.flagImgSrc }}" alt="{{ country.name }}">
 			{% endif %}
 			<h1>
-				{{ country.name }} <span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span>
+				{{ country.name }}
+				<span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span>
 			</h1>
 		</header>
+		
+		{% if is_granted('ROLE_ADMIN') %}
+			<div>
+				<a href="{{ path('edit_country', {code:country.code}) }}">Edit country</a>
+				<a href="{{ path('add_flag', {code: country.code}) }}">Set Flag</a>
+			</div>
+		{% endif %}
+
 		<div class="report_tabs_container">
 			{% if reports is not empty %}
 				{% for r in reports %}
@@ -30,7 +39,7 @@
 		</div>
 		<div class="report_details">
 			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
+				<a href="{{ path('edit_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Report</a>
 			{% endif %}
 			<div class="laboratories">
 				<h2>Participating Laboratories</h2>
@@ -47,6 +56,12 @@
 					<a href="{{ path('add_laboratory_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Laboratories</a>
 				{% endif %}
 			</div>
+			{% if report.description %}
+				<div class="description">
+					<h2>Description</h2>
+					{{ report.description|raw }}
+				</div>
+			{% endif %}
 			<div class="adulterants">
 				<h2>Total Adulterants by Year</h2>
 				{% if report.reportLineItems is not empty %}

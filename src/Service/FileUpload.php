@@ -35,6 +35,7 @@ class FileUpload{
 	}
 
 	public function uploadToMediaFile(UploadedFile $file, EntityManagerInterface $entityManager){
+		$originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 		/**
 		 * @var File|FileException
 		 */
@@ -44,6 +45,7 @@ class FileUpload{
 		}else{
 			$mediaFile = new MediaFile();
 			$mediaFile->setName($movedFile->getFilename());
+			$mediaFile->setNiceName($originalName);
 			$mediaFile->setSize($movedFile->getSize());
 			$mediaFile->setMimeType($movedFile->getMimeType());
 			$mediaFile->setPath(substr($movedFile->getPathname(), strlen($this->kernel->getProjectDir())));

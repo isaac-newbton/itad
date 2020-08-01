@@ -1,0 +1,16 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Edit Country</h1>
+		</header>
+		<div class="add_edit_form">
+			<p>Edit a country.</p>
+			{{ form(form) }}
+			<div class="delete_actions">
+				<a href="{{ path('delete_country', {code:country.code}) }}" class="button danger">Delete Country</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

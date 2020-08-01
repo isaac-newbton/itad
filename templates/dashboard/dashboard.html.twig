@@ -39,8 +39,14 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li class="{{ currentRoute in ['dashboard', 'countries', 'country', 'add_country', 'report', 'add_report', 'add_flag'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['dashboard'] ? 'active' : '' }}">
+							<a href="{{ path('dashboard') }}">Dashboard</a>
+						</li>
+						<li class="{{ currentRoute in ['map', 'countries', 'country', 'add_country', 'report', 'add_report', 'add_flag', 'edit_country'] ? 'active' : '' }}">
 							<a href="{{ path('countries') }}">Countries</a>
+						</li>
+						<li class="{{ currentRoute in ['laboratories', 'laboratory', 'add_laboratory', 'edit_laboratory'] ? 'active' : '' }}">
+							<a href="{{ path('laboratories') }}">Laboratories</a>
 						</li>
 						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant'] ? 'active' : '' }}">
 							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>
@@ -52,7 +58,17 @@
 				</nav>
 			</aside>
 			<main class="dashboard_main" id="dashboard_main">
-				{% block content %}content{% endblock %}
+				{% block content %}
+					<div class="dashboard_content">
+						<div class="dashboard_content_main_box">
+							<p>
+								<a href="{{ path('map') }}" class="button">Go to World Map</a>
+							</p>
+							<p>Welcome to the International Toxic Adulterant Database (ITAD) project website. ITAD was created by the <a href="https://colombo-plan.org/" target="_blank">Colombo Plan</a> to monitor the spread and extent of toxic adulterating substances in the drug supply internationally. On behalf of the US Department of State, Bureau of International Narcotics and Law Enforcement Affairs (INL) and organized by the Colombo Plan Secretariat, the first International Symposium of Forensic Drug Testing Lab Directors was held in Cancun, Mexico in December 2017. During this meeting the attending laboratories discussed the problem with toxic adulterants and diluents found in seized drug material in their countries.The International Toxic Adulterant Database (ITAD) was a direct result of this meeting. It was agreed upon by laboratory system representatives present at the meeting to participate in ITAD by submitting scientific data resulting from casework analysis. This data would be used to populate the proposed international database, documenting the prevalence and public health risks associated with the use of various toxic adulterants. A list of participating laboratories can be found via the <a href="{{ path('countries') }}">countries page</a>.</p>
+							<p>The Fredric Rieders Family Foundation <a href="https://www.forensicscienceeducation.org/" target="_blank">https://www.forensicscienceeducation.org/</a> was contracted by JMJ technologies to manage data collection and organization. Responsibilities of the CSFRE included establishment of communication with all potential participants, creation of a database to assist with the data collection by participants, distribution of the database to participants, and collection and compilation of data into a Master ITAD database. The data received from the laboratories contains target seized drug-of-abuse data in addition to adulterants/diluents found in the different samples. The data on this website summarizes the results submitted by participating laboratories, illustrating the international prevalence of toxic adulterant use, and describes the public health concerns associated with the various toxic adulterants identified.</p>
+						</div>
+					</div>
+				{% endblock %}
 			</main>
 		</div>
 	</div>

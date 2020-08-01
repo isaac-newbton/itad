@@ -6,6 +6,9 @@
 			<h1>{{ laboratory.name }}</h1>
 		</header>
 		<div class="laboratory_details dashboard_content_main_box">
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('edit_laboratory', {uuid: uuid_encode(laboratory.uuid)}) }}" class="button">Edit</a>
+			{% endif %}
 			<p><a href="{{ path('laboratories') }}">Back to list</a></p>
 			{% if is_granted('ROLE_ADMIN') %}
 				<div class="delete_actions">

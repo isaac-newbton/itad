@@ -45,9 +45,19 @@ class MediaFile
      */
     private $path;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $niceName;
+
     public function __construct(){
         $this->uuid = Uuid::uuid4();
         $this->articles = new ArrayCollection();
+    }
+
+    public function __toString(){
+        if(trim($this->niceName)!='') return $this->niceName;
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -145,6 +155,18 @@ class MediaFile
     public function setPath(string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getNiceName(): ?string
+    {
+        return $this->niceName;
+    }
+
+    public function setNiceName(?string $niceName): self
+    {
+        $this->niceName = $niceName;
 
         return $this;
     }

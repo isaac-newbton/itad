@@ -173,6 +173,33 @@ class ReportController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/report/{uuid}/edit", name="edit_report")
+	 */
+	function edit(string $uuid, Request $request, YearlyReportRepository $reportRepository){
+		$report = $reportRepository->findOneByEncodedUuid($uuid);
+		if(!$report){
+			return $this->redirectToRoute("countries");
+		}
+
+		$country = $report->getCountry();
+		$form = $this->createForm(YearlyReportType::class, $report);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+
+			$report = $form->getData();
+
+			$country->addYearlyReport($report);
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($report);
+			$manager->flush();
+
+			return $this->redirectToRoute('report', ['code'=>$country->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/edit.html.twig", ['bodyClass'=>'add_report', 'report'=>$report, 'form'=>$form->createView()]);
+	}
+
+	/**
 	 * @Route("/report/{uuid}/delete", name="delete_report")
 	 */
 	function delete(string $uuid, YearlyReportRepository $reportRepository){

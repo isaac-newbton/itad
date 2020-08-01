@@ -16,6 +16,13 @@ class DashboardController extends AbstractController{
 	 * @Route("/dashboard", name="dashboard")
 	 */
 	public function dashboard(CountryRepository $countryRepository){
+		return $this->render("dashboard/dashboard.html.twig", ['bodyClass'=>'dashboard']);
+	}
+
+	/**
+	 * @Route("/map", name="map")
+	 */
+	public function map(CountryRepository $countryRepository){
 		$googleApiKey = $_ENV['GOOGLE_API_KEY'];
 		if(empty($googleApiKey) || ''==trim($googleApiKey)){
 			return $this->redirectToRoute("countries");

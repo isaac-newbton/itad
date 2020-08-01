@@ -60,6 +60,31 @@ class CountryController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/country/{code}/edit", name="edit_country")
+	 */
+	function edit(string $code = '', Request $request, CountryRepository $countryRepository){
+		$country = $countryRepository->findOneByCode($code);
+		if(!$country){
+			return $this->redirectToRoute("countries");
+		}
+
+		$form = $this->createForm(CountryType::class, $country);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$country = $form->getData();
+
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($country);
+			$manager->flush();
+
+			return $this->redirectToRoute('countries');
+		}
+
+		return $this->render("dashboard/countries/edit.html.twig", ['bodyClass'=>'edit_country', 'country'=>$country, 'form'=>$form->createView()]);
+	}
+
+	/**
 	 * @Route("/country/{code}/delete", name="delete_country")
 	 */
 	function delete(string $code = '', CountryRepository $countryRepository){

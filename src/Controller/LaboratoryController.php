@@ -53,6 +53,31 @@ class LaboratoryController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/laboratory/{uuid}/edit", name="edit_laboratory")
+	 */
+	function edit(string $uuid, Request $request, LaboratoryRepository $laboratoryRepository){
+		$laboratory = $laboratoryRepository->findOneByEncodedUuid($uuid);
+		if(!$laboratory){
+			return $this->redirectToRoute('laboratories');
+		}
+
+		$form = $this->createForm(LaboratoryType::class, $laboratory);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$laboratory = $form->getData();
+
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($laboratory);
+			$manager->flush();
+
+			return $this->redirectToRoute('laboratories');
+		}
+
+		return $this->render("dashboard/laboratories/edit.html.twig", ['bodyClass'=>'edit_laboratory', 'form'=>$form->createView()]);
+	}
+
+	/**
 	 * @Route("/laboratory/{uuid}/delete", name="delete_laboratory")
 	 */
 	function delete(string $uuid, LaboratoryRepository $laboratoryRepository){

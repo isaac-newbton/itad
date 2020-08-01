@@ -42,6 +42,11 @@ class YearlyReport
      */
     private $fileDownloads;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -158,6 +163,18 @@ class YearlyReport
                 $fileDownload->setYearlyReport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

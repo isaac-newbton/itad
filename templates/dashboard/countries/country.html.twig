@@ -14,6 +14,7 @@
 			<p>There are no reports for {{ country.name }} yet.</p>
 			<p><a href="{{ path('countries') }}">Back to list</a></p>
 			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('edit_country', {code:country.code}) }}" class="button">Edit Country</a>
 				<a href="{{ path('add_report', {code: country.code}) }}" class="button">Add a Report</a>
 				<a href="{{ path('add_flag', {code: country.code}) }}" class="button">Set Flag</a>
 				<div class="delete_actions">

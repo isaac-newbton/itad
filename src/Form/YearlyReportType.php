@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class YearlyReportType extends AbstractType
 {
@@ -20,6 +21,9 @@ class YearlyReportType extends AbstractType
         $builder
             ->add('year', ChoiceType::class, [
                 'choices'=>$years,
+                'row_attr'=>['class'=>'form_row']
+            ])
+            ->add('description', TextareaType::class, [
                 'row_attr'=>['class'=>'form_row']
             ])
             ->add('save', SubmitType::class)

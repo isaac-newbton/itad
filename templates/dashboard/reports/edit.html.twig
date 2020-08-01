@@ -1,0 +1,13 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Edit {{report.year}} report for {{ report.country.name }}</h1>
+		</header>
+		<div class="add_edit_form">
+			<p>Edit the report for {{ report.country.name }}.</p>
+			{{ form(form) }}
+		</div>
+	</div>
+{% endblock %}
