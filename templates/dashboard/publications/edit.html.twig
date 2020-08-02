@@ -1,0 +1,18 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Edit Publication</h1>
+		</header>
+		<div class="add_edit_form dashboard_content_main_box">
+			<p>Edit a publication.</p>
+			{{ form(form) }}
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="delete_actions">
+					<a href="{{ path('delete_publication', {uuid:uuid_encode(publication.uuid)}) }}" class="button danger">Delete publication</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

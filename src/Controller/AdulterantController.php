@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Doctrine\UuidEncoder;
 use App\Entity\Adulterant;
+use App\Entity\AdulterantCustomField;
+use App\Form\AdulterantCustomFieldType;
 use App\Form\AdulterantThumbnailType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -10,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\AdulterantType;
+use App\Repository\AdulterantCustomFieldRepository;
 use App\Repository\AdulterantRepository;
 use App\Service\FileUpload;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -113,5 +116,73 @@ class AdulterantController extends AbstractController{
 		}
 
 		return $this->render("dashboard/adulterants/add_thumbnail.html.twig", ['bodyClass'=>'add_adulterant_thumbnail', 'form'=>$form->createView(), 'adulterant'=>$adulterant]);
+	}
+
+	/**
+	 * @Route("/adulterant/{uuid}/add-field", name="add_adulterant_field")
+	 */
+	public function addField(string $uuid, Request $request, AdulterantRepository $adulterantRepository, UuidEncoder $uuidEncoder){
+		/**
+		 * @var Adulterant
+		 */
+		$adulterant = $adulterantRepository->findOneByEncodedUuid($uuid);
+		if(!$adulterant){
+			return $this->redirectToRoute('adulterants');
+		}
+
+		$field = new AdulterantCustomField();
+
+		$form = $this->createForm(AdulterantCustomFieldType::class, $field);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$field = $form->getData();
+			$adulterant->addCustomField($field);
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($field);
+			$manager->flush();
+
+			return $this->redirectToRoute('adulterant', ['uuid'=>$uuidEncoder->encode($adulterant->getUuid())]);
+		}
+
+		return $this->render("dashboard/adulterants/add_field.html_twig", ['bodyClass'=>'add_adulterant_field', 'adulterant'=>$adulterant, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/adulterant/delete-field/{uuid}", name="delete_adulterant_field")
+	 */
+	public function deleteField(string $uuid, UuidEncoder $uuidEncoder, AdulterantCustomFieldRepository $adulterantCustomFieldRepository){
+		$field = $adulterantCustomFieldRepository->findOneByEncodedUuid($uuid);
+		if($field){
+			$adulterant = $field->getAdulterant();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($field);
+			$manager->flush();
+			return $this->redirectToRoute("adulterant", ['uuid'=>$uuidEncoder->encode($adulterant->getUuid())]);
+		}
+
+		return $this->redirectToRoute("adulterants");
+	}
+
+	/**
+	 * @Route("/adulterant/edit-field/{uuid}", name="edit_adulterant_field")
+	 */
+	public function editField(string $uuid, Request $request, UuidEncoder $uuidEncoder, AdulterantCustomFieldRepository $adulterantCustomFieldRepository){
+		$field = $adulterantCustomFieldRepository->findOneByEncodedUuid($uuid);
+		if(!$field){
+			return $this->redirectToRoute("adulterants");
+		}
+
+		$adulterant = $field->getAdulterant();
+		$form = $this->createForm(AdulterantCustomFieldType::class, $field);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$field = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($field);
+			$manager->flush();
+			return $this->redirectToRoute("adulterant", ['uuid'=>$uuidEncoder->encode($adulterant->getUuid())]);
+		}
+
+		return $this->render("dashboard/adulterants/edit_field.html.twig", ['bodyClass'=>'edit_adulterant_field', 'adulterant'=>$adulterant, 'field'=>$field, 'form'=>$form->createView()]);
 	}
 }

@@ -17,6 +17,11 @@
 							<div class="excerpt">
 								<em>{{ publication.author }}</em>
 							</div>
+							{% if is_granted('ROLE_ADMIN') %}
+								<div class="read_more_container">
+									<a href="{{ path('edit_publication', {uuid:uuid_encode(publication.uuid)}) }}" class="button">Edit</a></p>
+								</div>
+							{% endif %}
 						</article>
 					</div>
 				{% endfor %}

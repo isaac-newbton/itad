@@ -128,6 +128,43 @@ class ResourcesController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/resources/publication/{uuid}/edit", name="edit_publication")
+	 */
+	public function editPublication(string $uuid, Request $request, PublicationRepository $publicationRepository){
+		$publication = $publicationRepository->findOneByEncodedUuid($uuid);
+		if(!$publication){
+			return $this->redirectToRoute('publications');
+		}
+		$form = $this->createForm(PublicationType::class, $publication);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$publication = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($publication);
+			$manager->flush();
+
+			return $this->redirectToRoute('publications');
+		}
+
+		return $this->render("dashboard/publications/edit.html.twig", ['bodyClass'=>'edit_publication', 'publication'=>$publication, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/resources/publication/{uuid}/delete", name="delete_publication")
+	 */
+	public function deletePublication(string $uuid, PublicationRepository $publicationRepository){
+		$publication = $publicationRepository->findOneByEncodedUuid($uuid);
+		if($publication){
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($publication);
+			$manager->flush();
+
+		}
+		return $this->redirectToRoute('publications');
+	}
+
+	/**
 	 * @Route("/resources/presentations", name="presentations")
 	 */
 	public function presentations(PresentationRepository $presentationRepository){
@@ -154,5 +191,45 @@ class ResourcesController extends AbstractController{
 		}
 
 		return $this->render("dashboard/presentations/add.html.twig", ['bodyClass'=>'add_publication', 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/resources/presentation/{uuid}/edit", name="edit_presentation")
+	 */
+	public function editPresentation(string $uuid, Request $request, PresentationRepository $presentationRepository){
+		$presentation = $presentationRepository->findOneByEncodedUuid($uuid);
+
+		if(!$presentation){
+			return $this->redirectToRoute('presentations');
+		}
+
+		$form = $this->createForm(PresentationType::class, $presentation);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$presentation = $form->getData();
+
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($presentation);
+			$manager->flush();
+
+			return $this->redirectToRoute('presentations');
+		}
+
+		return $this->render("dashboard/presentations/edit.html.twig", ['bodyClass'=>'add_publication', 'presentation'=>$presentation, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/resources/presentation/{uuid}/delete", name="delete_presentation")
+	 */
+	public function deletePresentation(string $uuid, PresentationRepository $presentationRepository){
+		$presentation = $presentationRepository->findOneByEncodedUuid($uuid);
+		if($presentation){
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($presentation);
+			$manager->flush();
+
+		}
+		return $this->redirectToRoute('presentations');
 	}
 }

@@ -368,6 +368,7 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   list-style: none;
   padding: 0;
   font-size: 1rem;
+  margin-bottom: 0;
 }
 .dashboard_content .report_details .adulterants ul li {
   display: flex;
@@ -377,8 +378,8 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   padding: 0.75rem 0;
   border-top: 1px solid #CECED0;
 }
-.dashboard_content .report_details .adulterants ul li:last-child {
-  border-bottom: 1px solid #CECED0;
+.dashboard_content .report_details .adulterants ul li.hide {
+  display: none;
 }
 .dashboard_content .report_details .adulterants ul li > div {
   display: flex;
@@ -395,6 +396,18 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
 }
 .dashboard_content .report_details .adulterants ul li .delete_actions {
   padding-left: 1rem;
+}
+.dashboard_content .report_details .adulterants .show_more_container {
+  border-top: 1px solid #CECED0;
+  margin-bottom: 2rem;
+}
+.dashboard_content .report_details .adulterants .show_more_container a {
+  display: block;
+  padding: 1.5rem 0;
+  text-transform: uppercase;
+  color: #739942;
+  font-weight: bold;
+  text-decoration: none;
 }
 .dashboard_content .report_details .downloads .downloads_list_container {
   display: flex;

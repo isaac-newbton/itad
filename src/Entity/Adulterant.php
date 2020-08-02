@@ -55,9 +55,15 @@ class Adulterant
      */
     private $reportLineItems;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AdulterantCustomField::class, mappedBy="adulterant", orphanRemoval=true)
+     */
+    private $customFields;
+
     public function __construct(){
         $this->uuid = Uuid::uuid4();
         $this->reportLineItems = new ArrayCollection();
+        $this->customFields = new ArrayCollection();
     }
 
     public function __toString()
@@ -183,5 +189,36 @@ class Adulterant
     public function thumbnailImgSrc(): ?string{
         if(!$this->thumbnail) return null;
         return str_replace(['/public', '\\'], ['', '/'], $this->thumbnail->getPath());
+    }
+
+    /**
+     * @return Collection|AdulterantCustomField[]
+     */
+    public function getCustomFields(): Collection
+    {
+        return $this->customFields;
+    }
+
+    public function addCustomField(AdulterantCustomField $customField): self
+    {
+        if (!$this->customFields->contains($customField)) {
+            $this->customFields[] = $customField;
+            $customField->setAdulterant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomField(AdulterantCustomField $customField): self
+    {
+        if ($this->customFields->contains($customField)) {
+            $this->customFields->removeElement($customField);
+            // set the owning side to null (unless already changed)
+            if ($customField->getAdulterant() === $this) {
+                $customField->setAdulterant(null);
+            }
+        }
+
+        return $this;
     }
 }

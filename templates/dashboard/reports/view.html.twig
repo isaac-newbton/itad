@@ -11,7 +11,7 @@
 				<span class="report_last_submission">Last Submission: {{ 'now'|date('m/d/Y') }}</span>
 			</h1>
 		</header>
-		
+
 		{% if is_granted('ROLE_ADMIN') %}
 			<div>
 				<a href="{{ path('edit_country', {code:country.code}) }}">Edit country</a>
@@ -65,9 +65,10 @@
 			<div class="adulterants">
 				<h2>Total Adulterants by Year</h2>
 				{% if report.reportLineItems is not empty %}
-					<ul>
+					{% set itemsRendered = 0 %}
+					<ul id="adulterants_list">
 						{% for item in report.reportLineItems %}
-							<li>
+							<li class="adulterant_line_item{{ (itemsRendered >= 4) ? ' hide adulterant_hide_on_toggle' : '' }}">
 								<div class="adulterant">
 									{{ item.adulterant.name }}
 								</div>
@@ -80,8 +81,14 @@
 									</div>
 								{% endif %}
 							</li>
+							{% set itemsRendered = itemsRendered + 1 %}
 						{% endfor %}
 					</ul>
+					{% if itemsRendered > 4 %}
+						<div class="show_more_container">
+							<a id="show_more_adulterants" href="#adulterants_list" data-toggle="off">Show More &#x1F863;</a>
+						</div>
+					{% endif %}
 				{% else %}
 					<p>No data yet</p>
 				{% endif %}
@@ -125,4 +132,31 @@
 			{% endif %}
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		let showMore = document.getElementById('show_more_adulterants')
+		let adulterantsLineItems = document.getElementsByClassName('adulterant_hide_on_toggle')
+		if(showMore){
+			showMore.addEventListener('click', function(e){
+				if(showMore.dataset.toggle=='on'){
+					showMore.dataset.toggle = 'off'
+					showMore.innerHTML = 'Show More &#x1F863;'
+				}else{
+					showMore.dataset.toggle = 'on'
+					showMore.innerHTML = 'Show Less &#x1F861;'
+				}
+				for(var i = 0; i < adulterantsLineItems.length; i++){
+					if(showMore.dataset.toggle=='on'){
+						adulterantsLineItems[i].classList.remove('hide')
+					}else{
+						adulterantsLineItems[i].classList.add('hide')
+					}
+				}
+			})
+		}
+	</script>
+
+	{{ parent() }}
 {% endblock %}

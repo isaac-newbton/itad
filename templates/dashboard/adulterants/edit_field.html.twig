@@ -1,0 +1,19 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>{{ adulterant.name }} Custom Field</h1>
+		</header>
+		<div class="add_edit_form dashboard_content_main_box">
+			<p>Edit "{{ field.name }}" custom field for {{ adulterant.name }}.</p>
+			{{ form(form) }}
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="delete_actions">
+					<a href="{{ path('delete_adulterant_field', {uuid:uuid_encode(field.uuid)}) }}" class="button danger">Delete custom field</a>
+				</div>
+			{% endif %}
+
+		</div>
+	</div>
+{% endblock %}

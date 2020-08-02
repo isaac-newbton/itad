@@ -254,6 +254,7 @@
 				list-style:none;
 				padding:0;
 				font-size:1rem;
+				margin-bottom:0;
 
 				li{
 					display:flex;
@@ -263,8 +264,8 @@
 					padding:0.75rem 0;
 					border-top:1px solid $color_inputBorder;
 
-					&:last-child{
-						border-bottom:1px solid $color_inputBorder;
+					&.hide{
+						display:none;
 					}
 
 					> div{
@@ -286,6 +287,20 @@
 					.delete_actions{
 						padding-left:1rem;
 					}
+				}
+			}
+
+			.show_more_container{
+				border-top:1px solid $color_inputBorder;
+				margin-bottom:2rem;
+
+				a{
+					display:block;
+					padding:1.5rem 0;
+					text-transform: uppercase;
+					color:$color_activeGreen;
+					font-weight:bold;
+					text-decoration: none;
 				}
 			}
 		}

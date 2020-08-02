@@ -17,6 +17,11 @@
 							<div class="excerpt">
 								<em>{{ presentation.author }}</em>
 							</div>
+							{% if is_granted('ROLE_ADMIN') %}
+								<div class="read_more_container">
+									<a href="{{ path('edit_presentation', {uuid:uuid_encode(presentation.uuid)}) }}" class="button">Edit</a></p>
+								</div>
+							{% endif %}
 						</article>
 					</div>
 				{% endfor %}

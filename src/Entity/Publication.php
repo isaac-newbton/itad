@@ -29,6 +29,11 @@ class Publication
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="string", length=2048, nullable=true)
+     */
+    private $url;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -67,6 +72,18 @@ class Publication
     public function setAuthor(string $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

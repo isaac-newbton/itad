@@ -47,7 +47,27 @@
 							{{ adulterant.physiologicalEffect|raw }}
 						</div>
 					{% endif %}
+					{% if adulterant.customFields is not empty %}
+						{% for field in adulterant.customFields %}
+							<div class="adulterant_property">
+								<h2>{{ field.name }}</h2>
+								{% if field.content|trim is not empty %}
+									{{ field.content }}
+								{% else %}
+									N/A
+								{% endif %}
+								{% if is_granted('ROLE_ADMIN') %}
+									<p class="meta">
+										This is a custom field added by an admin. <a href="{{ path('edit_adulterant_field', {uuid:uuid_encode(field.uuid)}) }}">Click here to edit or delete {{ field.name }}.</a>
+									</p>
+								{% endif %}
+							</div>
+						{% endfor %}
+					{% endif %}
 				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('add_adulterant_field', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">Add custom field</a>
+				{% endif %}
 			</div>
 			<p><a href="{{ path('adulterants', {letter:adulterant.name|first|capitalize}) }}">Back to list</a></p>
 			{% if is_granted('ROLE_ADMIN') %}
