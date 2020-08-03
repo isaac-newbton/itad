@@ -15,9 +15,6 @@
 						{% if adulterants is not empty %}
 							<a href="#adulterants">{{ adulterants|length }} adulterant{{ 1 != adulterants|length ? 's' : '' }}</a>
 						{% endif %}
-						{% if articles is not empty %}
-							<a href="#articles">{{ articles|length }} article{{ 1 != articles|length ? 's' : '' }}</a>
-						{% endif %}
 						{% if countries is not empty %}
 							<a href="#countries">{{ countries|length }} countr{{ 1 != countries|length ? 'ies' : 'y' }}</a>
 						{% endif %}
@@ -41,23 +38,6 @@
 								<h4>
 									<a href="{{ path('adulterant', {uuid:uuid_encode(adulterant.uuid)}) }}">{{ adulterant.name }}</a>
 								</h4>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-				{% if articles is not empty %}
-					<div id="articles" class="container">
-						<header>
-							<h3>{{ articles|length }} article{{ 1 != articles|length ? 's' : '' }}</h3>
-						</header>
-						{% for article in articles %}
-							<div class="search_result">
-								<h4>
-									<a href="{{ path('article', {uuid:uuid_encode(article.uuid)}) }}">{{ article.name }}</a>
-								</h4>
-								<div class="meta">
-									{{ article.dt|date('m/d/Y') }}
-								</div>
 							</div>
 						{% endfor %}
 					</div>

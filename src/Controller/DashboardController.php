@@ -62,7 +62,6 @@ class DashboardController extends AbstractController{
 			'searchTerm'=>$term,
 			'adulterants'=>$adulterantRepository->search($term),
 			'countries'=>$countryRepository->search($term),
-			'articles'=>$articleRepository->search($term),
 			'publications'=>$publicationRepository->search($term),
 			'presentations'=>$presentationRepository->search($term)
 		]);

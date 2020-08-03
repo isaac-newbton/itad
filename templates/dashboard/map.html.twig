@@ -86,11 +86,15 @@
 		function drawRegionsMap() {
 			var data = google.visualization.arrayToDataTable([]);
 
-			{% if countries is not empty %}
+			{% if countryData is not empty %}
 				data = google.visualization.arrayToDataTable([
 					['Country','Reports'],
-					{% for country in countries %}
-					['{{ country.name }}', {{ country.yearlyReports|length }}],
+					{% for data in countryData %}
+						{% if (data.reports is not empty) and (0 < data.reports[0].reportLineItems|length) %}
+							['{{ data.name }}', {{ data.reports|length }}],
+						{% else %}
+							['{{ data.name }}', 0],
+						{% endif %}
 					{% endfor %}
 				])
 			{% endif %}
@@ -119,6 +123,19 @@
 			var chart = new google.visualization.GeoChart(document.getElementById('world_map'));
 
 			chart.draw(data, options);
+
+			google.visualization.events.addListener(chart, 'select', selectHandler)
+
+			function selectHandler(e){
+				let rawSelection = chart.getSelection()
+				if(0==rawSelection.length){
+					//deselect
+				}else{
+					let countryName = data.getFormattedValue(rawSelection[0].row, rawSelection[0].column ?? 0)
+					let tooltip = $(`.map_tooltip[data-country="${countryName}"]`)
+					console.log(tooltip)
+				}
+			}
 		}
 	</script>
 
