@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ReportController extends AbstractController{
 	/**
@@ -216,6 +217,47 @@ class ReportController extends AbstractController{
 			$manager->remove($report);
 			$manager->flush();
 			return $this->redirectToRoute("country", ['code'=>$country->getCode()]);
+		}
+
+		return $this->redirectToRoute("countries");
+	}
+
+	/**
+	 * @Route("/report/{uuid}/download", name="download_report")
+	 */
+	function download(string $uuid, YearlyReportRepository $reportRepository){
+		/**
+		 * @var YearlyReport|null
+		 */
+		$report = $reportRepository->findOneByEncodedUuid($uuid);
+		if($report){
+			$country = $report->getCountry();
+			$items = $report->getReportLineItems();
+			$laboratories = $report->getParticipatingLaboratories();
+			if(!empty($items)){
+				$rows = [["{$report->getYear()} report for {$country->getName()}"]];
+				if(!empty($laboratories)){
+					foreach($laboratories as $laboratory){
+						$rows[] = ["{$laboratory->getName()}"];
+					}
+				}
+				$rows[] = ["Adulterant", "Value"];
+				foreach($items as $item){
+					$rows[] = ["{$item->getAdulterant()->getName()}", "{$item->getValue()}%"];
+				}
+				if(!empty($rows)){
+					$filename = "{$country->getCode()}-{$report->getYear()}.csv";
+					$content = '';
+					foreach($rows as $row){
+						$content .= implode(',', $row) . PHP_EOL;
+					}
+					$response = new Response($content);
+					$disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
+					$response->headers->set('Content-Disposition', $disposition);
+					return $response;
+				}
+			}
+			return $this->redirectToRoute("report", ['code'=>$country->getCode(), 'year'=>$report->getYear()]);
 		}
 
 		return $this->redirectToRoute("countries");

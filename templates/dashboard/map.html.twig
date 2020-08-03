@@ -2,6 +2,77 @@
 
 {% block content %}
 	<div id="world_map"></div>
+	<div id="map_legend">
+		<h2>Legend</h2>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<div class="color_block" style="background:#6f9541;"></div>
+					</td>
+					<td>
+						<div class="color_key">Data received</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="color_block" style="background:#014822;"></div>
+					</td>
+					<td>
+						<div class="color_key">No data received</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="map_tooltips">
+		{% if countryData is not empty %}
+			{% for data in countryData %}
+				<div class="map_tooltip" data-code="{{ data.code }}" data-country="{{ data.name }}">
+					<header>
+						<h3>{{ data.name }} ({{ data.code }})</h3>
+					</header>
+					<div class="content">
+						{% if 0 < data.reports|length %}
+							{% if data.reports[0].reportLineItems is not empty %}
+								{% set renderedItems = 0 %}
+								{% set extraItems = 0 %}
+								<div>
+									{% for item in data.reports[0].reportLineItems %}
+										{% if 3 > renderedItems %}
+											<div class="adulterant_data">
+												<div class="adulterant">
+													{{ item.adulterant.name }}
+												</div>
+												<div class="value">
+													{{ item.value }}%
+												</div>
+											</div>
+										{% else %}
+											{% set extraItems = extraItems + 1 %}
+										{% endif %}
+										{% set renderedItems = renderedItems + 1 %}
+									{% endfor %}
+								</div>
+								{% if 0 < extraItems %}
+									<div class="extra">
+										...and {{ extraItems }} more
+									</div>
+								{% endif %}
+							{% else %}
+								The latest report for {{ data.name }} ({{ data.reports[0].year }}) contains no adulterant data.
+							{% endif %}
+						{% else %}
+							There are currently no reports for {{ data.name }}.
+						{% endif %}
+					</div>
+					<footer>
+						<a href="{{ data.profileUrl }}" title="{{ data.name }} Profile">Go to profile</a>
+					</footer>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -13,15 +84,7 @@
 		});
 		google.charts.setOnLoadCallback(drawRegionsMap);
 		function drawRegionsMap() {
-			var data = google.visualization.arrayToDataTable([
-				['Country', 'Reports', 'Chemicals'],
-				['Germany', 200, 225],
-				['United States', 300, 100],
-				['Brazil', 400, 65],
-				['Canada', 500, 40],
-				['France', 600, 1200],
-				['RU', 700, 1300]
-			]);
+			var data = google.visualization.arrayToDataTable([]);
 
 			{% if countries is not empty %}
 				data = google.visualization.arrayToDataTable([

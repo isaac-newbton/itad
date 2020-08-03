@@ -1,3 +1,123 @@
 g.google-visualization-tooltip{
 	font-family: $fontFamily_default;
 }
+
+#map_legend{
+	max-width:16rem;
+	box-sizing:border-box;
+	position:relative;
+	bottom: 8rem;
+	left: 1rem;
+	padding:1rem;
+	border-radius:0.5rem;
+	box-shadow:0 2px 8px rgba(0,0,0,0.25);
+	background:#ffffff;
+	z-index:999;
+
+	h2{
+		font-size:1rem;
+		font-weight:bold;
+		margin-top:0;
+		margin-bottom:0.25rem;
+		text-align:center;
+		text-transform: uppercase;
+	}
+
+	td{
+		padding:0.25rem 0;
+
+		.color_block{
+			width:2rem;
+			height:2rem;
+			border-radius:0.25rem;
+		}
+
+		.color_key{
+			padding-left:0.5rem;
+		}
+	}
+}
+
+#map_tooltips{
+
+	.map_tooltip{
+		max-width:20rem;
+		box-sizing:border-box;
+		box-shadow:0 4px 10px rgba(0,0,0,0.33);
+		border-radius:0.5rem;
+		background-color:#ffffff;
+		z-index:1000;
+
+		header{
+			background-color:#ffffff;
+			border-radius:0.5rem 0.5rem 0 0;
+
+			h3{
+				padding:0.5rem;
+				border-bottom:1px solid $color_inputBorder;
+				text-align:center;
+				margin-bottom:0;
+				color:$color_bgGreen;
+			}
+		}
+
+		.content{
+			padding:1rem;
+			background-color:#ffffff;
+
+			.adulterant_data{
+				display:flex;
+				width:100%;
+				padding:0.5rem 0;
+				margin-bottom:0.5rem;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				font-size:0.875rem;
+
+				&:not(:last-child){
+					border-bottom:1px solid $color_inputBorder;
+				}
+
+				.adulterant{
+					flex-grow: 1;
+				}
+
+				.value{
+					flex-basis: 120px;
+					flex-grow: 0;
+					text-align:right;
+					font-weight:bold;
+					color:$color_activeGreen;
+				}
+			}
+
+			.extra{
+				font-style: italic;
+				font-size:0.875rem;
+				color:$color_textLightGrey;
+				padding-left:1rem;
+			}
+		}
+
+		footer{
+
+			a{
+				display:block;
+				box-sizing:border-box;
+				width:100%;
+				padding:0.5rem;
+				font-weight:bold;
+				text-transform:uppercase;
+				color:#ffffff;
+				background:$color_interactiveGreen;
+				border-radius:0 0 0.5rem 0.5rem;
+				text-decoration: none;
+				text-align:center;
+
+				&:hover, &:focus{
+					background-color:$color_activeGreen;
+				}
+			}
+		}
+	}
+}

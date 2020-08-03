@@ -4,16 +4,18 @@
 	<div class="dashboard_content">
 		<header>
 			<h1>{{ adulterant.name }}</h1>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('edit_adulterant', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">Edit</a>
+			{% endif %}
 		</header>
 		<div class="adulterant_details_container dashboard_content_main_box">
 			<div class="adulterant_details">
 				<div class="adulterant_image_container">
 					{% if adulterant.thumbnail %}
 						<img src="{{ adulterant.thumbnailImgSrc }}" alt="{{ adulterant.name }}">
-					{% else %}
-						{% if is_granted('ROLE_ADMIN') %}
-							<a href="{{ path('add_adulterant_thumbnail', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">+Image</a>
-						{% endif %}
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('add_adulterant_thumbnail', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">Set Image</a>
 					{% endif %}
 				</div>
 				<div class="adulterant_properties_container">
@@ -65,10 +67,10 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('add_adulterant_field', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">Add custom field</a>
-				{% endif %}
 			</div>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('add_adulterant_field', {uuid:uuid_encode(adulterant.uuid)}) }}" class="button">Add custom field</a>
+			{% endif %}
 			<p><a href="{{ path('adulterants', {letter:adulterant.name|first|capitalize}) }}">Back to list</a></p>
 			{% if is_granted('ROLE_ADMIN') %}
 				<div class="delete_actions">

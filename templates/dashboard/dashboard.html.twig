@@ -39,19 +39,19 @@
 						<h1>Menu</h1>
 					</header>
 					<ul>
-						<li class="{{ currentRoute in ['dashboard'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['dashboard', 'map'] ? 'active' : '' }}">
 							<a href="{{ path('dashboard') }}">Dashboard</a>
 						</li>
-						<li class="{{ currentRoute in ['map', 'countries', 'country', 'add_country', 'report', 'add_report', 'add_flag', 'edit_country'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['countries', 'country', 'add_country', 'report', 'add_report', 'add_flag', 'edit_country'] ? 'active' : '' }}">
 							<a href="{{ path('countries') }}">Countries</a>
 						</li>
 						<li class="{{ currentRoute in ['laboratories', 'laboratory', 'add_laboratory', 'edit_laboratory'] ? 'active' : '' }}">
 							<a href="{{ path('laboratories') }}">Laboratories</a>
 						</li>
-						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['adulterants', 'adulterant', 'add_adulterant', 'edit_adulterant', 'add_adulterant_thumbnail', 'add_adulterant_field', 'edit_adulterant_field'] ? 'active' : '' }}">
 							<a href="{{ path('adulterants') }}">Adulterant Definitions and Thesarus</a>
 						</li>
-						<li class="{{ currentRoute in ['resources', 'articles', 'publications', 'presentations', 'article', 'add_article', 'add_publication', 'add_presentation'] ? 'active' : '' }}">
+						<li class="{{ currentRoute in ['resources', 'articles', 'publications', 'presentations', 'article', 'add_article', 'add_publication', 'add_presentation', 'edit_publication', 'edit_presentation', 'edit_article'] ? 'active' : '' }}">
 							<a href="{{ path('resources') }}">Resources</a>
 						</li>
 					</ul>

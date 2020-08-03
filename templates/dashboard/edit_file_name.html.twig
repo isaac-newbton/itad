@@ -1,0 +1,13 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>Edit File Name</h1>
+		</header>
+		<div class="add_edit_form dashboard_content_main_box">
+			<p>Edit the display name of a file.</p>
+			{{ form(form) }}
+		</div>
+	</div>
+{% endblock %}

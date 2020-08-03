@@ -57,8 +57,8 @@ class AdulterantController extends AbstractController{
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
 			$adulterant = $form->getData();
-			$adulterant->setOccurrenceUsage(nl2br($adulterant->getOccurrenceUsage()));
-			$adulterant->setPhysiologicalEffect(nl2br($adulterant->getPhysiologicalEffect()));
+			$adulterant->setOccurrenceUsage($adulterant->getOccurrenceUsage());
+			$adulterant->setPhysiologicalEffect($adulterant->getPhysiologicalEffect());
 
 			$manager = $this->getDoctrine()->getManager();
 			$manager->persist($adulterant);
@@ -68,6 +68,34 @@ class AdulterantController extends AbstractController{
 		}
 
 		return $this->render("dashboard/adulterants/add.html.twig", ['bodyClass'=>'add_adulterant', 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/adulterant/{uuid}/edit", name="edit_adulterant")
+	 */
+	public function edit(string $uuid, Request $request, AdulterantRepository $adulterantRepository){
+		$adulterant = $adulterantRepository->findOneByEncodedUuid($uuid);
+
+		if(!$adulterant){
+			return $this->redirectToRoute('adulterants');
+		}
+
+		$form = $this->createForm(AdulterantType::class, $adulterant);
+
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$adulterant = $form->getData();
+			$adulterant->setOccurrenceUsage($adulterant->getOccurrenceUsage());
+			$adulterant->setPhysiologicalEffect($adulterant->getPhysiologicalEffect());
+
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($adulterant);
+			$manager->flush();
+
+			return $this->redirectToRoute('adulterant', ['uuid'=>$uuid]);
+		}
+
+		return $this->render("dashboard/adulterants/edit.html.twig", ['bodyClass'=>'add_adulterant', 'adulterant'=>$adulterant, 'form'=>$form->createView()]);
 	}
 
 	/**
@@ -144,7 +172,7 @@ class AdulterantController extends AbstractController{
 			return $this->redirectToRoute('adulterant', ['uuid'=>$uuidEncoder->encode($adulterant->getUuid())]);
 		}
 
-		return $this->render("dashboard/adulterants/add_field.html_twig", ['bodyClass'=>'add_adulterant_field', 'adulterant'=>$adulterant, 'form'=>$form->createView()]);
+		return $this->render("dashboard/adulterants/add_field.html.twig", ['bodyClass'=>'add_adulterant_field', 'adulterant'=>$adulterant, 'form'=>$form->createView()]);
 	}
 
 	/**

@@ -1,9 +1,12 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\MediaFile;
+use App\Form\MediaFileType;
 use App\Repository\AdulterantRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CountryRepository;
+use App\Repository\MediaFileRepository;
 use App\Repository\PresentationRepository;
 use App\Repository\PublicationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +30,23 @@ class DashboardController extends AbstractController{
 		if(empty($googleApiKey) || ''==trim($googleApiKey)){
 			return $this->redirectToRoute("countries");
 		}
-		return $this->render("dashboard/map.html.twig", ['bodyClass'=>'world_map', 'googleApiKey'=>$googleApiKey, 'countries'=>$countryRepository->findAll()]);
+
+		$countries = $countryRepository->findAll();
+		$countryData = [];
+
+		if(!empty($countries)){
+			foreach($countries as $country){
+				$data = [
+					'code'=>$country->getCode(),
+					'name'=>$country->getName(),
+					'profileUrl'=>$this->generateUrl('country', ['code'=>$country->getCode()]),
+					'reports'=>$country->getYearlyReports()
+				];
+				$countryData["{$country->getUuid()}"] = $data;
+			}
+		}
+
+		return $this->render("dashboard/map.html.twig", ['bodyClass'=>'world_map', 'googleApiKey'=>$googleApiKey, 'countries'=>$countries, 'countryData'=>$countryData]);
 	}
 
 	/**
@@ -47,5 +66,30 @@ class DashboardController extends AbstractController{
 			'publications'=>$publicationRepository->search($term),
 			'presentations'=>$presentationRepository->search($term)
 		]);
+	}
+
+	/**
+	 * @Route("/file/{uuid}/edit-name", name="edit_file_name")
+	 */
+	public function editFilename(string $uuid, MediaFileRepository $mediaFileRepository, Request $request){
+		/**
+		 * @var MediaFile|null
+		 */
+		$mediaFile = $mediaFileRepository->findOneByEncodedUuid($uuid);
+		if(!$mediaFile){
+			return $this->redirectToRoute('dashboard');
+		}
+
+		$form = $this->createForm(MediaFileType::class, $mediaFile);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			$mediaFile = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($mediaFile);
+			$manager->flush();
+			return $this->redirectToRoute('dashboard');
+		}
+
+		return $this->render("dashboard/edit_file_name.html.twig", ['bodyClass'=>'edit_file_name', 'file'=>$mediaFile, 'form'=>$form->createView()]);
 	}
 }

@@ -65,6 +65,9 @@
 			<div class="adulterants">
 				<h2>Total Adulterants by Year</h2>
 				{% if report.reportLineItems is not empty %}
+					<p>
+						<a href="{{ path('download_report', {uuid:uuid_encode(report.uuid)}) }}">Download as CSV</a>
+					</p>
 					{% set itemsRendered = 0 %}
 					<ul id="adulterants_list">
 						{% for item in report.reportLineItems %}
@@ -105,15 +108,19 @@
 								<div class="thumbnail_container">
 									{% if download.thumbnail %}
 										<a href="{{ download.thumbnailImgSrc }}" target="_blank">
-											<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file.name }}" class="thumbnail">
+											<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file }}" class="thumbnail">
 										</a>
 									{% endif %}
 								</div>
 								<div class="details_container">
-									{{ download.file.name }}
+									{{ download.file }}
 									<a class="cta" href="{{ download.href }}" target="_blank" download>
 										Download PDF
 									</a>
+									{% if is_granted('ROLE_ADMIN') %}
+										<br>
+										<a href="{{ path('edit_file_name', {uuid:uuid_encode(download.file.uuid)}) }}" target="_blank">Change filename</a>
+									{% endif %}
 								</div>
 							</div>
 						{% endfor %}

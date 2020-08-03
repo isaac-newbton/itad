@@ -516,6 +516,15 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   border-top: 1px solid #CECED0;
   padding-top: 1rem;
 }
+.dashboard_content .presentations_list .presentation_container .read_more_container {
+  margin-top: 2rem;
+}
+.dashboard_content .presentations_list .presentation_container .read_more_container .button {
+  display: inline-block;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: initial;
+}
 .dashboard_content .publications_list .publication_container header {
   margin: 0;
 }
@@ -531,6 +540,15 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   margin-top: 1rem;
   border-top: 1px solid #CECED0;
   padding-top: 1rem;
+}
+.dashboard_content .publications_list .publication_container .read_more_container {
+  margin-top: 2rem;
+}
+.dashboard_content .publications_list .publication_container .read_more_container .button {
+  display: inline-block;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  width: initial;
 }
 .dashboard_content .adulterants_list_container header {
   display: flex;
@@ -676,6 +694,106 @@ body.login_page footer a {
 
 g.google-visualization-tooltip {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+#map_legend {
+  max-width: 16rem;
+  box-sizing: border-box;
+  position: relative;
+  bottom: 8rem;
+  left: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  z-index: 999;
+}
+#map_legend h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+#map_legend td {
+  padding: 0.25rem 0;
+}
+#map_legend td .color_block {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+}
+#map_legend td .color_key {
+  padding-left: 0.5rem;
+}
+
+#map_tooltips .map_tooltip {
+  max-width: 20rem;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.33);
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  z-index: 1000;
+}
+#map_tooltips .map_tooltip header {
+  background-color: #ffffff;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+#map_tooltips .map_tooltip header h3 {
+  padding: 0.5rem;
+  border-bottom: 1px solid #CECED0;
+  text-align: center;
+  margin-bottom: 0;
+  color: #014A22;
+}
+#map_tooltips .map_tooltip .content {
+  padding: 1rem;
+  background-color: #ffffff;
+}
+#map_tooltips .map_tooltip .content .adulterant_data {
+  display: flex;
+  width: 100%;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-size: 0.875rem;
+}
+#map_tooltips .map_tooltip .content .adulterant_data:not(:last-child) {
+  border-bottom: 1px solid #CECED0;
+}
+#map_tooltips .map_tooltip .content .adulterant_data .adulterant {
+  flex-grow: 1;
+}
+#map_tooltips .map_tooltip .content .adulterant_data .value {
+  flex-basis: 120px;
+  flex-grow: 0;
+  text-align: right;
+  font-weight: bold;
+  color: #739942;
+}
+#map_tooltips .map_tooltip .content .extra {
+  font-style: italic;
+  font-size: 0.875rem;
+  color: #999999;
+  padding-left: 1rem;
+}
+#map_tooltips .map_tooltip footer a {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #417202;
+  border-radius: 0 0 0.5rem 0.5rem;
+  text-decoration: none;
+  text-align: center;
+}
+#map_tooltips .map_tooltip footer a:hover, #map_tooltips .map_tooltip footer a:focus {
+  background-color: #739942;
 }
 
 /*# sourceMappingURL=main.css.map */
