@@ -14,6 +14,7 @@ use App\Form\YearlyReportType;
 use App\Repository\AdulterantRepository;
 use App\Repository\CountryRepository;
 use App\Repository\LaboratoryRepository;
+use App\Repository\ReportLineItemRepository;
 use App\Repository\YearlyReportRepository;
 use App\Service\FileUpload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -130,6 +131,32 @@ class ReportController extends AbstractController{
 		}
 
 		return $this->render("dashboard/reports/add_adulterant.html.twig", ['bodyClass'=>'add_adulterant_to_report', 'report'=>$report, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/report/item/{uuid}/edit", name="edit_adulterant_in_report")
+	 */
+	public function editAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository){
+		$item = $reportLineItemRepository->findOneByEncodedUuid($uuid);
+		if(!$item){
+			return $this->redirectToRoute('countries');
+		}
+		$report = $item->getReport();
+
+		$form = $this->createForm(ReportLineItemType::class, $item);
+
+		$form->handleRequest($request);
+
+		if($form->isSubmitted() && $form->isValid()){
+			$item = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($item);
+			$manager->flush();
+
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/edit_adulterant.html.twig", ['bodyClass'=>'add_adulterant_to_report', 'report'=>$report, 'item'=>$item, 'form'=>$form->createView()]);
 	}
 
 	/**

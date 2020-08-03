@@ -80,6 +80,7 @@
 								</div>
 								{% if is_granted('ROLE_ADMIN') %}
 									<div class="delete_actions">
+										<a href="{{ path('edit_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button">Edit</a>
 										<a href="#" class="button danger">Delete</a>
 									</div>
 								{% endif %}
