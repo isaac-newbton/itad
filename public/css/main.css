@@ -697,44 +697,82 @@ g.google-visualization-tooltip {
 }
 
 #map_legend {
-  max-width: 16rem;
+  background-color: #ffffff;
   box-sizing: border-box;
-  position: relative;
-  bottom: 8rem;
-  left: 1rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  background: #ffffff;
-  z-index: 999;
+  display: flex;
+  padding: 0.5rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-top: 1px solid #CECED0;
 }
 #map_legend h2 {
+  margin: 0;
+  flex-grow: 0;
   font-size: 1rem;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0.25rem;
-  text-align: center;
   text-transform: uppercase;
 }
-#map_legend td {
-  padding: 0.25rem 0;
+#map_legend .legend_item {
+  margin-left: 2rem;
+  flex-grow: 0;
+  display: flex;
+  flex-wrap: nowrap;
 }
-#map_legend td .color_block {
-  width: 2rem;
-  height: 2rem;
+#map_legend .legend_item .color_block {
+  height: 1rem;
+  width: 1rem;
   border-radius: 0.25rem;
 }
-#map_legend td .color_key {
-  padding-left: 0.5rem;
+#map_legend .legend_item .color_key {
+  margin-left: 0.5rem;
 }
 
+#map_and_tooltip_container {
+  display: block;
+  position: relative;
+}
+
+#map_tooltips_wrapper {
+  width: 90%;
+  max-width: 25rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: center;
+}
+
+#map_tooltips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: none;
+}
+#map_tooltips.show {
+  display: block;
+}
 #map_tooltips .map_tooltip {
-  max-width: 20rem;
+  width: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.33);
   border-radius: 0.5rem;
   background-color: #ffffff;
   z-index: 1000;
+  display: none;
+}
+#map_tooltips .map_tooltip.show {
+  display: initial;
+}
+#map_tooltips .map_tooltip .close_tooltip {
+  font-size: 0.825rem;
+  color: #F24033;
+  font-style: italic;
+  padding-left: 1rem;
 }
 #map_tooltips .map_tooltip header {
   background-color: #ffffff;
@@ -745,6 +783,7 @@ g.google-visualization-tooltip {
   border-bottom: 1px solid #CECED0;
   text-align: center;
   margin-bottom: 0;
+  margin-top: 0;
   color: #014A22;
 }
 #map_tooltips .map_tooltip .content {

@@ -3,50 +3,89 @@ g.google-visualization-tooltip{
 }
 
 #map_legend{
-	max-width:16rem;
-	box-sizing:border-box;
-	position:relative;
-	bottom: 8rem;
-	left: 1rem;
-	padding:1rem;
-	border-radius:0.5rem;
-	box-shadow:0 2px 8px rgba(0,0,0,0.25);
-	background:#ffffff;
-	z-index:999;
+	background-color:#ffffff;
+	box-sizing: border-box;
+	display:flex;
+	padding:0.5rem;
+	flex-direction:row;
+	flex-wrap:wrap;
+	border-top:1px solid $color_inputBorder;
 
 	h2{
+		margin:0;
+		flex-grow:0;
 		font-size:1rem;
-		font-weight:bold;
-		margin-top:0;
-		margin-bottom:0.25rem;
-		text-align:center;
 		text-transform: uppercase;
 	}
 
-	td{
-		padding:0.25rem 0;
+	.legend_item{
+		margin-left:2rem;
+		flex-grow:0;
+		display:flex;
+		flex-wrap:nowrap;
 
 		.color_block{
-			width:2rem;
-			height:2rem;
+			height:1rem;
+			width:1rem;
 			border-radius:0.25rem;
 		}
 
 		.color_key{
-			padding-left:0.5rem;
+			margin-left:0.5rem;
 		}
 	}
 }
 
+#map_and_tooltip_container{
+	display:block;
+	position:relative;
+}
+
+#map_tooltips_wrapper{
+	width:90%;
+	max-width:25rem;
+	margin:0 auto;
+	display:flex;
+	flex-direction:column;
+	flex-wrap:nowrap;
+	height:100%;
+	justify-content: center;
+}
+
 #map_tooltips{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	width:100%;
+	height:100%;
+	background-color:rgba(0,0,0,0.25);
+	display:none;
+
+	&.show{
+		display:block;
+	}
 
 	.map_tooltip{
-		max-width:20rem;
+		width:100%;
 		box-sizing:border-box;
 		box-shadow:0 4px 10px rgba(0,0,0,0.33);
 		border-radius:0.5rem;
 		background-color:#ffffff;
 		z-index:1000;
+		display:none;
+
+		&.show{
+			display:initial;
+		}
+
+		.close_tooltip{
+			font-size:0.825rem;
+			color:$color_interactiveRed;
+			font-style: italic;
+			padding-left:1rem;
+		}
 
 		header{
 			background-color:#ffffff;
@@ -57,6 +96,7 @@ g.google-visualization-tooltip{
 				border-bottom:1px solid $color_inputBorder;
 				text-align:center;
 				margin-bottom:0;
+				margin-top:0;
 				color:$color_bgGreen;
 			}
 		}

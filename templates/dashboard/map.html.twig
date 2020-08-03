@@ -1,77 +1,70 @@
 {% extends "dashboard/dashboard.html.twig" %}
 
 {% block content %}
-	<div id="world_map"></div>
 	<div id="map_legend">
-		<h2>Legend</h2>
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						<div class="color_block" style="background:#6f9541;"></div>
-					</td>
-					<td>
-						<div class="color_key">Data received</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="color_block" style="background:#014822;"></div>
-					</td>
-					<td>
-						<div class="color_key">No data received</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<h2>Map Legend</h2>
+		<div class="legend_item">
+			<div class="color_block" style="background:#6f9541;"></div>
+			<div class="color_key">Data received</div>
+		</div>
+		<div class="legend_item">
+			<div class="color_block" style="background:#014822;"></div>
+			<div class="color_key">No data received</div>
+		</div>
 	</div>
-	<div id="map_tooltips">
-		{% if countryData is not empty %}
-			{% for data in countryData %}
-				<div class="map_tooltip" data-code="{{ data.code }}" data-country="{{ data.name }}">
-					<header>
-						<h3>{{ data.name }} ({{ data.code }})</h3>
-					</header>
-					<div class="content">
-						{% if 0 < data.reports|length %}
-							{% if data.reports[0].reportLineItems is not empty %}
-								{% set renderedItems = 0 %}
-								{% set extraItems = 0 %}
-								<div>
-									{% for item in data.reports[0].reportLineItems %}
-										{% if 3 > renderedItems %}
-											<div class="adulterant_data">
-												<div class="adulterant">
-													{{ item.adulterant.name }}
-												</div>
-												<div class="value">
-													{{ item.value }}%
-												</div>
+	<div id="map_and_tooltip_container">
+		<div id="world_map"></div>
+		<div id="map_tooltips">
+			<div id="map_tooltips_wrapper">
+				{% if countryData is not empty %}
+					{% for data in countryData %}
+						<div class="map_tooltip" data-code="{{ data.code }}" data-country="{{ data.name }}">
+							<header>
+								<h3>{{ data.name }} ({{ data.code }})</h3>
+							</header>
+							<a href="#" class="close_tooltip">&#10006; Close</a>
+							<div class="content">
+								{% if 0 < data.reports|length %}
+									{% if data.reports[0].reportLineItems is not empty %}
+										{% set renderedItems = 0 %}
+										{% set extraItems = 0 %}
+										<div>
+											{% for item in data.reports[0].reportLineItems %}
+												{% if 3 > renderedItems %}
+													<div class="adulterant_data">
+														<div class="adulterant">
+															{{ item.adulterant.name }}
+														</div>
+														<div class="value">
+															{{ item.value }}%
+														</div>
+													</div>
+												{% else %}
+													{% set extraItems = extraItems + 1 %}
+												{% endif %}
+												{% set renderedItems = renderedItems + 1 %}
+											{% endfor %}
+										</div>
+										{% if 0 < extraItems %}
+											<div class="extra">
+												...and {{ extraItems }} more
 											</div>
-										{% else %}
-											{% set extraItems = extraItems + 1 %}
 										{% endif %}
-										{% set renderedItems = renderedItems + 1 %}
-									{% endfor %}
-								</div>
-								{% if 0 < extraItems %}
-									<div class="extra">
-										...and {{ extraItems }} more
-									</div>
+									{% else %}
+										The latest report for {{ data.name }} ({{ data.reports[0].year }}) contains no adulterant data.
+									{% endif %}
+								{% else %}
+									There are currently no reports for {{ data.name }}.
 								{% endif %}
-							{% else %}
-								The latest report for {{ data.name }} ({{ data.reports[0].year }}) contains no adulterant data.
-							{% endif %}
-						{% else %}
-							There are currently no reports for {{ data.name }}.
-						{% endif %}
-					</div>
-					<footer>
-						<a href="{{ data.profileUrl }}" title="{{ data.name }} Profile">Go to profile</a>
-					</footer>
-				</div>
-			{% endfor %}
-		{% endif %}
+							</div>
+							<footer>
+								<a href="{{ data.profileUrl }}" title="{{ data.name }} Profile">Go to profile</a>
+							</footer>
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
 	</div>
 {% endblock %}
 
@@ -113,7 +106,7 @@
 				},
 				legend: 'none',
 				tooltip: {
-					trigger: 'selection',
+					trigger: 'none',
 					textStyle: {
 						fontName: 'Montserrat'
 					}
@@ -129,13 +122,34 @@
 			function selectHandler(e){
 				let rawSelection = chart.getSelection()
 				if(0==rawSelection.length){
-					//deselect
+					$('#map_tooltips').removeClass('show')
 				}else{
 					let countryName = data.getFormattedValue(rawSelection[0].row, rawSelection[0].column ?? 0)
 					let tooltip = $(`.map_tooltip[data-country="${countryName}"]`)
-					console.log(tooltip)
+					if(tooltip){
+						$('.map_tooltip').each(function(){
+							$(this).removeClass('show')
+						})
+						$('#map_tooltips').addClass('show')
+						tooltip.addClass('show')
+					}else{
+						$('#map_tooltips').removeClass('show')
+					}
 				}
 			}
+
+			document.getElementById('map_tooltips').addEventListener('click', function(e){
+				e.target.classList.remove('show')
+			})
+
+			document.getElementById('map_tooltips_wrapper').addEventListener('click', function(e){
+				document.getElementById('map_tooltips').classList.remove('show')
+			})
+
+			document.getElementsByClassName('close_tooltip').addEventListener('click', function(e){
+				e.preventDefault()
+				document.getElementById('map_tooltips').classList.remove('show')
+			})
 		}
 	</script>
 
