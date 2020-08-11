@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ReportLineItem;
+use App\Repository\AdulterantRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +17,10 @@ class ReportLineItemType extends AbstractType
         $builder
             ->add('adulterant', null, [
                 'row_attr'=>['class'=>'form_row'],
-                'multiple'=>false
+                'multiple'=>false,
+                'query_builder'=>function(AdulterantRepository $adulterantRepository){
+                    return $adulterantRepository->createQueryBuilder('a')->orderBy('a.name', 'ASC');
+                }
             ])
             ->add('value', NumberType::class,[
                 'row_attr'=>['class'=>'form_row'],

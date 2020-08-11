@@ -81,7 +81,7 @@
 								{% if is_granted('ROLE_ADMIN') %}
 									<div class="delete_actions">
 										<a href="{{ path('edit_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button">Edit</a>
-										<a href="#" class="button danger">Delete</a>
+										<a href="{{ path('delete_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button danger">Delete</a>
 									</div>
 								{% endif %}
 							</li>
@@ -114,13 +114,17 @@
 									{% endif %}
 								</div>
 								<div class="details_container">
-									{{ download.file }}
+									{{ download }}
 									<a class="cta" href="{{ download.href }}" target="_blank" download>
 										Download PDF
 									</a>
 									{% if is_granted('ROLE_ADMIN') %}
 										<br>
+										<a href="{{ path('edit_download_in_report', {uuid:uuid_encode(download.uuid)}) }}">Edit download</a>
+										<br>
 										<a href="{{ path('edit_file_name', {uuid:uuid_encode(download.file.uuid)}) }}" target="_blank">Change filename</a>
+										<br>
+										<a href="{{ path('delete_download', {uuid:uuid_encode(download.uuid)}) }}" class="button danger">Delete Download</a>
 									{% endif %}
 								</div>
 							</div>

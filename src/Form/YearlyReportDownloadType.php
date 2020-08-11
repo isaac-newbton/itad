@@ -6,6 +6,7 @@ use App\Entity\FileDownload;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -18,7 +19,7 @@ class YearlyReportDownloadType extends AbstractType
             ->add('file', FileType::class, [
                 'label'=>'File download',
                 'mapped'=>false,
-                'required'=>true,
+                'required'=>false,
                 'constraints'=>[
                     new File([
                         'maxSize'=>'8192k'
@@ -42,6 +43,11 @@ class YearlyReportDownloadType extends AbstractType
                         'mimeTypesMessage'=>'An image format is required.'
                     ])
                 ],
+                'row_attr'=>['class'=>'form_row']
+            ])
+            ->add('niceName', TextType::class, [
+                'label'=>'Display name/label',
+                'required'=>false,
                 'row_attr'=>['class'=>'form_row']
             ])
             ->add('Submit', SubmitType::class)

@@ -29,9 +29,19 @@ class FileDownload
      */
     private $yearlyReport;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $niceName;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
+    }
+
+    public function __toString()
+    {
+        return $this->niceName ?? $this->file->__toString();
     }
 
     public function getFile(): ?MediaFile
@@ -77,5 +87,17 @@ class FileDownload
     public function getThumbnailImgSrc(): ?string{
         if(!$this->thumbnail) return null;
         return str_replace(['/public', '\\'], ['', '/'], $this->thumbnail->getPath());
+    }
+
+    public function getNiceName(): ?string
+    {
+        return $this->niceName;
+    }
+
+    public function setNiceName(?string $niceName): self
+    {
+        $this->niceName = $niceName;
+
+        return $this;
     }
 }

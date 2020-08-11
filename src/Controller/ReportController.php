@@ -13,6 +13,7 @@ use App\Form\YearlyReportLaboratoriesType;
 use App\Form\YearlyReportType;
 use App\Repository\AdulterantRepository;
 use App\Repository\CountryRepository;
+use App\Repository\FileDownloadRepository;
 use App\Repository\LaboratoryRepository;
 use App\Repository\ReportLineItemRepository;
 use App\Repository\YearlyReportRepository;
@@ -160,6 +161,38 @@ class ReportController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/report/item/{uuid}/delete", name="delete_adulterant_in_report")
+	 */
+	public function deleteAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository){
+		$item = $reportLineItemRepository->findOneByEncodedUuid($uuid);
+		if($item){
+			$report = $item->getReport();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($item);
+			$manager->flush();
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->redirectToRoute('countries');
+	}
+
+	/**
+	 * @Route("/report/download/{uuid}/delete", name="delete_download")
+	 */
+	public function deleteDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository){
+		$item = $fileDownloadRepository->findOneByEncodedUuid($uuid);
+		if($item){
+			$report = $item->getYearlyReport();
+			$manager = $this->getDoctrine()->getManager();
+			$manager->remove($item);
+			$manager->flush();
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->redirectToRoute('countries');
+	}
+
+	/**
 	 * @Route("/report/{uuid}/add-download", name="add_download_to_report")
 	 */
 	public function addDownload(string $uuid, Request $request, YearlyReportRepository $reportRepository, FileUpload $fileUploadService){
@@ -198,6 +231,46 @@ class ReportController extends AbstractController{
 		}
 
 		return $this->render("dashboard/reports/add_download.html.twig", ['bodyClass'=>'add_download_to_report', 'report'=>$report, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/report/download/{uuid}/edit", name="edit_download_in_report")
+	 */
+	public function editDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository, FileUpload $fileUploadService){
+		$download = $fileDownloadRepository->findOneByEncodedUuid($uuid);
+		if(!$download){
+			return $this->redirectToRoute('countries');
+		}
+
+		$report = $download->getYearlyReport();
+
+		$form = $this->createForm(YearlyReportDownloadType::class, $download);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			/**
+			 * @var UploadedFile
+			 */
+			$file = $form->get('file')->getData();
+			if($file){
+				$manager = $this->getDoctrine()->getManager();
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$download->setFile($result);
+
+				$thumbnail = $form->get('thumbnail')->getData();
+				if($thumbnail){
+					$thumbnailResult = $fileUploadService->uploadToMediaFile($thumbnail, $manager);
+					$download->setThumbnail($thumbnailResult);
+				}
+
+
+				$manager->persist($download);
+				$manager->flush();
+			}
+
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/edit_download.html.twig", ['bodyClass'=>'edit_download_in_report', 'report'=>$report, 'download'=>$download, 'form'=>$form->createView()]);
 	}
 
 	/**

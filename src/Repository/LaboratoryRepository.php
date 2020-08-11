@@ -22,6 +22,10 @@ class LaboratoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Laboratory::class);
     }
 
+    public function findAll(){
+        return $this->findBy([], ['name'=>'ASC']);
+    }
+
     // /**
     //  * @return Laboratory[] Returns an array of Laboratory objects
     //  */
