@@ -1,0 +1,14 @@
+{% extends "dashboard/dashboard.html.twig" %}
+
+{% block content %}
+	<div class="dashboard_content">
+		<header>
+			<h1>User Profile</h1>
+		</header>
+		<div class="user_profile_container dashboard_content_main_box">
+			<strong>{{ app.user.email }}</strong> <a href="{{ path('change_email') }}">Change email</a>
+			<br>
+			<a href="{{ path('change_password') }}">Change password</a>
+		</div>
+	</div>
+{% endblock %}

@@ -10,7 +10,7 @@
 			<div id="search_container">
 				{% if app.user %}
 					<div id="logout_container">
-						<a href="{{ path('logout') }}" class="button">Log out</a>
+						<a href="{{ path('logout') }}" class="button">Log out</a><br>
 					</div>
 				{% endif %}
 				<div id="search_country_container">
@@ -42,6 +42,9 @@
 						<li class="{{ currentRoute in ['dashboard', 'map'] ? 'active' : '' }}">
 							<a href="{{ path('dashboard') }}">Dashboard</a>
 						</li>
+						<li class="{{ currentRoute in ['user_profile', 'change_email', 'change_password'] ? 'active' : '' }}">
+							<a href="{{ path('user_profile') }}">User Profile</a>
+						</li>
 						<li class="{{ currentRoute in ['countries', 'country', 'add_country', 'report', 'add_report', 'add_flag', 'edit_country', 'add_adulterant_to_report', 'edit_adulterant_in_report'] ? 'active' : '' }}">
 							<a href="{{ path('countries') }}">Countries</a>
 						</li>
@@ -54,6 +57,11 @@
 						<li class="{{ currentRoute in ['resources', 'articles', 'publications', 'presentations', 'article', 'add_article', 'add_publication', 'add_presentation', 'edit_publication', 'edit_presentation', 'edit_article'] ? 'active' : '' }}">
 							<a href="{{ path('resources') }}">Resources</a>
 						</li>
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="{{ currentRoute in ['users', 'add_user', 'edit_user'] ? 'active' : '' }}">
+								<a href="{{ path('users') }}">Users</a>
+							</li>
+						{% endif %}
 					</ul>
 				</nav>
 			</aside>

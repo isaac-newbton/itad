@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Doctrine\UuidEncoder;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,9 +18,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    use UuidFinderTrait;
+
+    public function __construct(ManagerRegistry $registry, UuidEncoder $uuidEncoder)
     {
+        $this->uuidEncoder = $uuidEncoder;
         parent::__construct($registry, User::class);
+    }
+
+    public function findAll(){
+        return $this->findBy([], ['email'=>'ASC']);
     }
 
     /**

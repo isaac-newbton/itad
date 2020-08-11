@@ -16,7 +16,7 @@ class DefaultController extends AbstractController{
 	 * @Route("/dev/fileupload", name="dev_fileupload")
 	 */
 	public function fileUpload(Request $request, FileUpload $fileUploadService){
-
+		$this->denyAccessUnlessGranted('ROLE_DEVELOPER');
 		$form = $this->createForm(FileUploadType::class);
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
