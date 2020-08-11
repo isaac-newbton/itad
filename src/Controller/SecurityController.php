@@ -49,7 +49,7 @@ class SecurityController extends AbstractController
                 $mailed = mail(
                     $email,
                     'Password Reset',
-                    "Someone requested a password reset for this email ($email). Use the updated password below to log in and immediately visit your user profile (" . $this->get('router')->generate('user_profile') . ") to change it to a more secure password. Your temporary password is: $password",
+                    "Someone requested a password reset for this email ($email). Use the updated password below to log in and immediately visit your user profile (" . $this->get('router')->generateUrl('user_profile') . ") to change it to a more secure password. Your temporary password is: $password",
                     'From: noreply@hanlon-itad.isaacnewbton.com' . "\r\n" . 'X-Mailer: PHP/' . phpversion()
                 );
             }
