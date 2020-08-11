@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -49,7 +51,7 @@ class SecurityController extends AbstractController
                 $mailed = mail(
                     $email,
                     'Password Reset',
-                    "Someone requested a password reset for this email ($email). Use the updated password below to log in and immediately visit your user profile (" . $this->generateUrl('user_profile') . ") to change it to a more secure password. Your temporary password is: $password",
+                    "Someone requested a password reset for this email ($email). Use the updated password below to log in and immediately visit your user profile (" . $this->generateUrl('user_profile', [], UrlGeneratorInterface::ABSOLUTE_URL) . ") to change it to a more secure password. Your temporary password is: $password",
                     'From: noreply@hanlon-itad.isaacnewbton.com' . "\r\n" . 'X-Mailer: PHP/' . phpversion()
                 );
             }
