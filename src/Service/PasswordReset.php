@@ -20,7 +20,7 @@ class PasswordReset{
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $password = '';
         for ($i = 0; $i < 6; $i++) {
-            $password .= $characters[rand(0, strlen($characters))];
+            $password .= $characters[rand(0, strlen($characters) - 1)];
 		}
 		$user->setPassword($this->passwordEncoder->encodePassword($user, $password));
 		$this->entityManager->persist($user);
