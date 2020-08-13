@@ -47,12 +47,18 @@ class YearlyReport
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ExcelDataFile::class, mappedBy="yearlyReport", orphanRemoval=true)
+     */
+    private $excelDataFiles;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
         $this->reportLineItems = new ArrayCollection();
         $this->participatingLaboratories = new ArrayCollection();
         $this->fileDownloads = new ArrayCollection();
+        $this->excelDataFiles = new ArrayCollection();
     }
 
     public function getYear(): ?int
@@ -175,6 +181,37 @@ class YearlyReport
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExcelDataFile[]
+     */
+    public function getExcelDataFiles(): Collection
+    {
+        return $this->excelDataFiles;
+    }
+
+    public function addExcelDataFile(ExcelDataFile $excelDataFile): self
+    {
+        if (!$this->excelDataFiles->contains($excelDataFile)) {
+            $this->excelDataFiles[] = $excelDataFile;
+            $excelDataFile->setYearlyReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExcelDataFile(ExcelDataFile $excelDataFile): self
+    {
+        if ($this->excelDataFiles->contains($excelDataFile)) {
+            $this->excelDataFiles->removeElement($excelDataFile);
+            // set the owning side to null (unless already changed)
+            if ($excelDataFile->getYearlyReport() === $this) {
+                $excelDataFile->setYearlyReport(null);
+            }
+        }
 
         return $this;
     }

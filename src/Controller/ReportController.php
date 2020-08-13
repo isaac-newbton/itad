@@ -3,16 +3,19 @@ namespace App\Controller;
 
 use App\Doctrine\UuidEncoder;
 use App\Entity\Country;
+use App\Entity\ExcelDataFile;
 use App\Entity\FileDownload;
 use App\Entity\ReportLineItem;
 use App\Entity\YearlyReport;
 use App\Form\CountryType;
+use App\Form\ExcelDataFileType;
 use App\Form\ReportLineItemType;
 use App\Form\YearlyReportDownloadType;
 use App\Form\YearlyReportLaboratoriesType;
 use App\Form\YearlyReportType;
 use App\Repository\AdulterantRepository;
 use App\Repository\CountryRepository;
+use App\Repository\ExcelDataFileRepository;
 use App\Repository\FileDownloadRepository;
 use App\Repository\LaboratoryRepository;
 use App\Repository\ReportLineItemRepository;
@@ -234,6 +237,39 @@ class ReportController extends AbstractController{
 	}
 
 	/**
+	 * @Route("/report/{uuid}/add-excel-data", name="add_excel_to_report")
+	 */
+	public function addExcel(string $uuid, Request $request, YearlyReportRepository $reportRepository, FileUpload $fileUploadService){
+		$report = $reportRepository->findOneByEncodedUuid($uuid);
+		if(!$report){
+			return $this->redirectToRoute('countries');
+		}
+
+		$excelFile = new ExcelDataFile();
+		$form = $this->createForm(ExcelDataFileType::class, $excelFile);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			/**
+			 * @var UploadedFile
+			 */
+			$file = $form->get('file')->getData();
+			if($file){
+				$manager = $this->getDoctrine()->getManager();
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$excelFile->setFile($result);
+				$report->addExcelDataFile($excelFile);
+				$manager->persist($excelFile);
+				$manager->persist($report);
+				$manager->flush();
+			}
+
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/add_excel.html.twig", ['bodyClass'=>'add_excel_to_report', 'report'=>$report, 'form'=>$form->createView()]);
+	}
+
+	/**
 	 * @Route("/report/download/{uuid}/edit", name="edit_download_in_report")
 	 */
 	public function editDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository, FileUpload $fileUploadService){
@@ -271,6 +307,64 @@ class ReportController extends AbstractController{
 		}
 
 		return $this->render("dashboard/reports/edit_download.html.twig", ['bodyClass'=>'edit_download_in_report', 'report'=>$report, 'download'=>$download, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/report/excel/{uuid}/edit", name="edit_excel_in_report")
+	 */
+	public function editExcel(string $uuid, Request $request, ExcelDataFileRepository $excelRepository, FileUpload $fileUploadService){
+		/**
+		 * @var ExcelDataFile|null
+		 */
+		$excel = $excelRepository->findOneByEncodedUuid($uuid);
+		if(!$excel){
+			return $this->redirectToRoute('countries');
+		}
+
+		$report = $excel->getYearlyReport();
+
+		$form = $this->createForm(ExcelDataFileType::class, $excel);
+		$form->handleRequest($request);
+		if($form->isSubmitted() && $form->isValid()){
+			/**
+			 * @var UploadedFile
+			 */
+			$file = $form->get('file')->getData();
+			if($file){
+				$manager = $this->getDoctrine()->getManager();
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$excel->setFile($result);
+				$manager->persist($excel);
+				$manager->flush();
+			}
+
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		}
+
+		return $this->render("dashboard/reports/edit_excel.html.twig", ['bodyClass'=>'edit_excel_in_report', 'report'=>$report, 'excel'=>$excel, 'form'=>$form->createView()]);
+	}
+
+	/**
+	 * @Route("/report/excel/{uuid}/delete", name="delete_excel")
+	 */
+	public function deleteExcel(string $uuid, ExcelDataFileRepository $excelRepository){
+		/**
+		 * @var ExcelDataFile|null
+		 */
+		$excel = $excelRepository->findOneByEncodedUuid($uuid);
+		if(!$excel){
+			return $this->redirectToRoute('countries');
+		}
+
+		$report = $excel->getYearlyReport();
+		$report->removeExcelDataFile($excel);
+
+		$manager = $this->getDoctrine()->getManager();
+		$manager->remove($excel);
+		$manager->remove($excel->getFile());
+		$manager->flush();
+		
+		return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
 	}
 
 	/**
