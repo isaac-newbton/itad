@@ -148,13 +148,13 @@
 								</div>
 								<div class="details_container">
 									<a href="{{ excel.href }}" target="_blank" download>Download {{ excel }}</a>
+									{% if is_granted('ROLE_ADMIN') %}
+										<div class="admin_actions">
+											<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
+											<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
+										</div>
+									{% endif %}
 								</div>
-								{% if is_granted('ROLE_ADMIN') %}
-									<div class="admin_actions">
-										<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
-										<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
-									</div>
-								{% endif %}
 							</div>
 						{% endfor %}
 					</div>

@@ -34,6 +34,10 @@ body {
   font-size: 1rem;
 }
 
+a.danger {
+  color: #F24033;
+}
+
 button, a.button, input[type=submit] {
   background-color: #417202;
   color: #ffffff;
@@ -49,6 +53,7 @@ button, a.button, input[type=submit] {
 }
 button:hover, button:active, a.button:hover, a.button:active, input[type=submit]:hover, input[type=submit]:active {
   background-color: #007FEB;
+  color: #ffffff;
 }
 button:focus, a.button:focus, input[type=submit]:focus {
   outline: #2e9fff solid 2px;
@@ -456,6 +461,38 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   margin-top: 0.5rem;
   color: #417202;
   text-decoration: none;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container .excel {
+  flex: 0 0 40%;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 1rem 0.25rem;
+  border: 1px solid #CECED0;
+  border-radius: 0.25rem;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container .excel .thumbnail_container {
+  width: 60px;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container .excel .thumbnail_container img {
+  max-width: 100%;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container .excel .details_container {
+  padding-left: 1rem;
+}
+.dashboard_content .report_details .excel_data .excel_data_list_container .excel .details_container .admin_actions {
+  margin-top: 0.5rem;
+  border-top: 1px solid #CECED0;
+  padding-top: 0.5rem;
+  font-size: 0.875rem;
 }
 .dashboard_content .report_tabs_container {
   max-width: 1020px;

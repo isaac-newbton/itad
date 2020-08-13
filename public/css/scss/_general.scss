@@ -7,6 +7,13 @@ body{
 	font-size:1rem;
 }
 
+a{
+
+	&.danger{
+		color:$color_interactiveRed;
+	}
+}
+
 button, a.button, input[type="submit"]{
 	background-color: $color_interactiveGreen;
 	color: #ffffff;
@@ -22,6 +29,7 @@ button, a.button, input[type="submit"]{
 
 	&:hover, &:active{
 		background-color: $color_interactiveBlue;
+		color:#ffffff;
 	}
 
 	&:focus{

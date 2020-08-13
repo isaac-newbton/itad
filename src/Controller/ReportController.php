@@ -8,6 +8,7 @@ use App\Entity\FileDownload;
 use App\Entity\ReportLineItem;
 use App\Entity\YearlyReport;
 use App\Form\CountryType;
+use App\Form\ExcelDataFileEditType;
 use App\Form\ExcelDataFileType;
 use App\Form\ReportLineItemType;
 use App\Form\YearlyReportDownloadType;
@@ -256,6 +257,7 @@ class ReportController extends AbstractController{
 			if($file){
 				$manager = $this->getDoctrine()->getManager();
 				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$excelFile = $form->getData();
 				$excelFile->setFile($result);
 				$report->addExcelDataFile($excelFile);
 				$manager->persist($excelFile);
@@ -323,20 +325,21 @@ class ReportController extends AbstractController{
 
 		$report = $excel->getYearlyReport();
 
-		$form = $this->createForm(ExcelDataFileType::class, $excel);
+		$form = $this->createForm(ExcelDataFileEditType::class, $excel);
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
+			$excel = $form->getData();
+			$manager = $this->getDoctrine()->getManager();
 			/**
 			 * @var UploadedFile
 			 */
 			$file = $form->get('file')->getData();
 			if($file){
-				$manager = $this->getDoctrine()->getManager();
 				$result = $fileUploadService->uploadToMediaFile($file, $manager);
 				$excel->setFile($result);
-				$manager->persist($excel);
-				$manager->flush();
 			}
+			$manager->persist($excel);
+			$manager->flush();
 
 			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
 		}
@@ -363,7 +366,7 @@ class ReportController extends AbstractController{
 		$manager->remove($excel);
 		$manager->remove($excel->getFile());
 		$manager->flush();
-		
+
 		return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
 	}
 
