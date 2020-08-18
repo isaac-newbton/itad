@@ -10,6 +10,7 @@ use App\Form\PublicationType;
 use App\Repository\ArticleRepository;
 use App\Repository\PresentationRepository;
 use App\Repository\PublicationRepository;
+use App\Service\FileUpload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -175,7 +176,7 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/presentations/add", name="add_presentation")
 	 */
-	public function addPresentation(Request $request){
+	public function addPresentation(Request $request, FileUpload $fileUploadService){
 		$presentation = new Presentation();
 		$form = $this->createForm(PresentationType::class, $presentation);
 
@@ -184,6 +185,13 @@ class ResourcesController extends AbstractController{
 			$presentation = $form->getData();
 
 			$manager = $this->getDoctrine()->getManager();
+
+			$file = $form->get('file')->getData();
+			if($file){
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$presentation->setFile($result);
+			}
+
 			$manager->persist($presentation);
 			$manager->flush();
 
@@ -196,7 +204,7 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/presentation/{uuid}/edit", name="edit_presentation")
 	 */
-	public function editPresentation(string $uuid, Request $request, PresentationRepository $presentationRepository){
+	public function editPresentation(string $uuid, Request $request, PresentationRepository $presentationRepository, FileUpload $fileUploadService){
 		$presentation = $presentationRepository->findOneByEncodedUuid($uuid);
 
 		if(!$presentation){
@@ -210,6 +218,15 @@ class ResourcesController extends AbstractController{
 			$presentation = $form->getData();
 
 			$manager = $this->getDoctrine()->getManager();
+
+			$file = $form->get('file')->getData();
+			if($file){
+				$oldFile = $presentation->getFile();
+				if($oldFile) $manager->remove($oldFile);
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$presentation->setFile($result);
+			}
+
 			$manager->persist($presentation);
 			$manager->flush();
 

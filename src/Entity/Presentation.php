@@ -30,6 +30,16 @@ class Presentation
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToOne(targetEntity=MediaFile::class, cascade={"persist", "remove"})
+     */
+    private $file;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -70,5 +80,33 @@ class Presentation
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFile(): ?MediaFile
+    {
+        return $this->file;
+    }
+
+    public function setFile(?MediaFile $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function getFileHref(): string{
+        return $this->file ? str_replace(['/public', '\\'], ['', '/'], $this->file->getPath()) : '';
     }
 }

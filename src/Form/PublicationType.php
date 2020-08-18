@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PublicationType extends AbstractType
 {
@@ -22,6 +23,10 @@ class PublicationType extends AbstractType
             ])
             ->add('url', TextType::class, [
                 'row_attr'=>['class'=>'form_row']
+            ])
+            ->add('description', TextareaType::class, [
+                'row_attr'=>['class'=>'form_row'],
+                'required'=>false
             ])
             ->add('save', SubmitType::class)
         ;

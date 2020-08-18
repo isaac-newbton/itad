@@ -142,20 +142,22 @@
 					<h2>Excel Data</h2>
 					<div class="excel_data_list_container">
 						{% for excel in report.excelDataFiles %}
-							<div class="excel">
-								<div class="thumbnail_container">
-									<img src="/images/xlsx-icon.png" alt="{{ excel.file }}" class="thumbnail">
+							{% if excel.user == app.user %}
+								<div class="excel">
+									<div class="thumbnail_container">
+										<img src="/images/xlsx-icon.png" alt="{{ excel.file }}" class="thumbnail">
+									</div>
+									<div class="details_container">
+										<a href="{{ excel.href }}" target="_blank" download>Download {{ excel }}</a>
+										{% if is_granted('ROLE_ADMIN') %}
+											<div class="admin_actions">
+												<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
+												<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
+											</div>
+										{% endif %}
+									</div>
 								</div>
-								<div class="details_container">
-									<a href="{{ excel.href }}" target="_blank" download>Download {{ excel }}</a>
-									{% if is_granted('ROLE_ADMIN') %}
-										<div class="admin_actions">
-											<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
-											<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
-										</div>
-									{% endif %}
-								</div>
-							</div>
+							{% endif %}
 						{% endfor %}
 					</div>
 				{% endif %}

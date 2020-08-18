@@ -30,6 +30,11 @@ class ExcelDataFile
      */
     private $yearlyReport;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=user::class)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -78,5 +83,17 @@ class ExcelDataFile
 
     public function getHref(): string{
         return str_replace(['/public', '\\'], ['', '/'], $this->file->getPath());
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

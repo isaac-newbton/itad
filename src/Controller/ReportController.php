@@ -258,6 +258,7 @@ class ReportController extends AbstractController{
 				$manager = $this->getDoctrine()->getManager();
 				$result = $fileUploadService->uploadToMediaFile($file, $manager);
 				$excelFile = $form->getData();
+				$excelFile->setUser($this->getUser());
 				$excelFile->setFile($result);
 				$report->addExcelDataFile($excelFile);
 				$manager->persist($excelFile);

@@ -184,7 +184,10 @@ button.danger:hover, button.danger:active, a.button.danger:hover, a.button.dange
   justify-content: space-between;
 }
 #logos_container img {
-  max-height: 100px;
+  display: block;
+  max-width: 360px;
+  max-height: 120px;
+  object-fit: contain;
 }
 
 #logout_container {
@@ -735,9 +738,10 @@ body.login_page footer a {
 }
 .login_main_image img {
   display: block;
-  max-width: 200px;
+  max-width: 360px;
+  max-height: 170px;
   height: auto;
-  margin: 10px auto;
+  margin: 15px auto;
   object-fit: contain;
 }
 

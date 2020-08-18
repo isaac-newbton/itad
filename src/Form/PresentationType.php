@@ -4,10 +4,13 @@ namespace App\Form;
 
 use App\Entity\Presentation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\File;
 
 class PresentationType extends AbstractType
 {
@@ -19,6 +22,22 @@ class PresentationType extends AbstractType
             ])
             ->add('author', TextType::class, [
                 'row_attr'=>['class'=>'form_row']
+            ])
+            ->add('description', TextareaType::class, [
+                'row_attr'=>['class'=>'form_row'],
+                'required'=>false
+            ])
+            ->add('file', FileType::class, [
+                'row_attr'=>['class'=>'form_row'],
+                'constraints'=>[
+                    new File([
+                        'maxSize'=>'8192k',
+                        'mimeTypes'=>['application/pdf'],
+                        'mimeTypesMessage'=>'{{ type }} is not allowed. This field requires a file of type: {{ types }}'
+                    ])
+                ],
+                'required'=>false,
+                'mapped'=>false
             ])
             ->add('save', SubmitType::class)
         ;

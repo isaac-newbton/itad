@@ -15,7 +15,10 @@
 								<h2>{{ publication.name }}</h2>
 							</header>
 							<div class="excerpt">
-								<em>{{ publication.author }}</em>
+								<p><em>{{ publication.author }}</em></p>
+								{% if publication.description is not empty %}
+									{{ publication.description|raw }}
+								{% endif %}
 							</div>
 							{% if publication.url is not empty %}
 								<div class="read_more_container">

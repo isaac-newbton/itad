@@ -15,8 +15,16 @@
 								<h2>{{ presentation.name }}</h2>
 							</header>
 							<div class="excerpt">
-								<em>{{ presentation.author }}</em>
+								<p><em>{{ presentation.author }}</em></p>
+								{% if presentation.description is not empty %}
+									{{ presentation.description|raw }}
+								{% endif %}
 							</div>
+							{% if presentation.file %}
+								<div class="read_more_container">
+									<a href="{{ presentation.fileHref }}" class="button" download>Download</a>
+								</div>
+							{% endif %}
 							{% if is_granted('ROLE_ADMIN') %}
 								<div class="read_more_container">
 									<a href="{{ path('edit_presentation', {uuid:uuid_encode(presentation.uuid)}) }}" class="button">Edit</a></p>
