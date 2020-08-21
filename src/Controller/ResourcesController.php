@@ -110,15 +110,21 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/publications/add", name="add_publication")
 	 */
-	public function addPublication(Request $request){
+	public function addPublication(Request $request, FileUpload $fileUploadService){
 		$publication = new Publication();
 		$form = $this->createForm(PublicationType::class, $publication);
 
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
 			$publication = $form->getData();
-
 			$manager = $this->getDoctrine()->getManager();
+
+			$file = $form->get('file')->getData();
+			if($file){
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$publication->setFile($result);
+			}
+
 			$manager->persist($publication);
 			$manager->flush();
 
@@ -131,7 +137,7 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/publication/{uuid}/edit", name="edit_publication")
 	 */
-	public function editPublication(string $uuid, Request $request, PublicationRepository $publicationRepository){
+	public function editPublication(string $uuid, Request $request, PublicationRepository $publicationRepository, FileUpload $fileUploadService){
 		$publication = $publicationRepository->findOneByEncodedUuid($uuid);
 		if(!$publication){
 			return $this->redirectToRoute('publications');
@@ -142,6 +148,15 @@ class ResourcesController extends AbstractController{
 		if($form->isSubmitted() && $form->isValid()){
 			$publication = $form->getData();
 			$manager = $this->getDoctrine()->getManager();
+
+			$file = $form->get('file')->getData();
+			if($file){
+				$oldFile = $publication->getFile();
+				if($oldFile) $manager->remove($oldFile);
+				$result = $fileUploadService->uploadToMediaFile($file, $manager);
+				$publication->setFile($result);
+			}
+
 			$manager->persist($publication);
 			$manager->flush();
 

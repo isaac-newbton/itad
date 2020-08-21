@@ -20,11 +20,14 @@
 									{{ publication.description|raw }}
 								{% endif %}
 							</div>
-							{% if publication.url is not empty %}
-								<div class="read_more_container">
+							<div class="read_more_container">
+								{% if publication.url is not empty %}
 									<a href="{{ publication.url }}" class="button" target="_blank">Read More</a>
-								</div>
-							{% endif %}
+								{% endif %}
+								{% if publication.file %}
+									<a href="{{ publication.fileHref }}" class="button" download>Download</a>
+								{% endif %}
+							</div>
 							{% if is_granted('ROLE_ADMIN') %}
 								<div class="read_more_container">
 									<a href="{{ path('edit_publication', {uuid:uuid_encode(publication.uuid)}) }}" class="button">Edit</a></p>
