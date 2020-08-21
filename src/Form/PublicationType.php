@@ -24,7 +24,8 @@ class PublicationType extends AbstractType
                 'row_attr'=>['class'=>'form_row']
             ])
             ->add('url', TextType::class, [
-                'row_attr'=>['class'=>'form_row']
+                'row_attr'=>['class'=>'form_row'],
+                'required'=>false
             ])
             ->add('description', TextareaType::class, [
                 'row_attr'=>['class'=>'form_row'],
