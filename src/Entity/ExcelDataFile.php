@@ -31,7 +31,7 @@ class ExcelDataFile
     private $yearlyReport;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class)
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $user;
 
