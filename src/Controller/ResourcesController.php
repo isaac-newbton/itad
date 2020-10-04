@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class ResourcesController extends AbstractController{
 	/**
@@ -27,8 +29,14 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/articles", name="articles")
 	 */
-	public function articles(ArticleRepository $articleRepository){
-		$articles = $articleRepository->findAll();
+	public function articles(ArticleRepository $articleRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request){
+		$dql = "SELECT a FROM App\Entity\Article a ORDER BY a.dt DESC";
+		$query = $manager->createQuery($dql);
+		$articles = $paginator->paginate(
+			$query,
+			$request->query->getInt('page', 1),
+			5
+		);
 		return $this->render("dashboard/articles/list.html.twig", ['bodyClass'=>'articles', 'articles'=>$articles]);
 	}
 
@@ -102,8 +110,14 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/publications", name="publications")
 	 */
-	public function publications(PublicationRepository $publicationRepository){
-		$publications = $publicationRepository->findAll();
+	public function publications(PublicationRepository $publicationRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request){
+		$dql = "SELECT p FROM App\Entity\Publication p ORDER BY p.dt DESC";
+		$query = $manager->createQuery($dql);
+		$publications = $paginator->paginate(
+			$query,
+			$request->query->getInt('page', 1),
+			5
+		);
 		return $this->render("dashboard/publications/list.html.twig", ['bodyClass'=>'publications', 'publications'=>$publications]);
 	}
 
@@ -183,8 +197,14 @@ class ResourcesController extends AbstractController{
 	/**
 	 * @Route("/resources/presentations", name="presentations")
 	 */
-	public function presentations(PresentationRepository $presentationRepository){
-		$presentations = $presentationRepository->findAll();
+	public function presentations(PresentationRepository $presentationRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request){
+		$dql = "SELECT p FROM App\Entity\Presentation p ORDER BY p.dt DESC";
+		$query = $manager->createQuery($dql);
+		$presentations = $paginator->paginate(
+			$query,
+			$request->query->getInt('page', 1),
+			5
+		);
 		return $this->render("dashboard/presentations/list.html.twig", ['bodyClass'=>'presentations', 'presentations'=>$presentations]);
 	}
 

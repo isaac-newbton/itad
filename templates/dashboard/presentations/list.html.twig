@@ -7,6 +7,9 @@
 		</header>
 		<div class="presentations_list">
 			{% if presentations is not empty %}
+				<div class="pagination_container">
+					{{ knp_pagination_render(presentations) }}
+				</div>
 				{% for presentation in presentations %}
 					<div class="presentation_container">
 						<article>
@@ -32,6 +35,9 @@
 						</article>
 					</div>
 				{% endfor %}
+				<div class="pagination_container">
+					{{ knp_pagination_render(presentations) }}
+				</div>
 			{% else %}
 				<p>No presentations are posted yet.</p>
 			{% endif %}
