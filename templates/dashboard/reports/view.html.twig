@@ -30,7 +30,7 @@
 							{% else %}
 								<a href="{{ path('report', {code:country.code, year:r.year}) }}">{{ r.year }}</a>
 							{% endif %}
-							{% set years = years|merge([year]) %}
+							{% set years = years|merge([r.year]) %}
 						</div>
 					{% endif %}
 				{% endfor %}
@@ -41,6 +41,7 @@
 				</div>
 			{% endif %}
 		</div>
+
 		<div class="report_details">
 			{% for report in currentReports %}
 				<div class="single_report_container" id="report_{{ uuid_encode(report.uuid) }}">
