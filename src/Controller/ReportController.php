@@ -33,7 +33,7 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/country/{code}/add", name="add_report")
 	 */
-	public function add(Request $request, string $code, CountryRepository $countryRepository, YearlyReportRepository $reportRepository){
+	public function add(Request $request, string $code, CountryRepository $countryRepository, UuidEncoder $encoder){
 		$report = new YearlyReport();
 
 		$country = $countryRepository->findOneByCode($code);
@@ -44,21 +44,15 @@ class ReportController extends AbstractController{
 		$form = $this->createForm(YearlyReportType::class, $report);
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
-			$existingReport = $reportRepository->findOneBy([
-				'country'=>$country,
-				'year'=>$form->get('year')->getData()
-			]);
 
 			$report = $form->getData();
 
-			if(!$existingReport){
-				$country->addYearlyReport($report);
-				$manager = $this->getDoctrine()->getManager();
-				$manager->persist($report);
-				$manager->flush();
-			}
+			$country->addYearlyReport($report);
+			$manager = $this->getDoctrine()->getManager();
+			$manager->persist($report);
+			$manager->flush();
 
-			return $this->redirectToRoute('report', ['code'=>$code, 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$code, 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->render("dashboard/reports/add.html.twig", ['bodyClass'=>'add_report', 'country'=>$country, 'form'=>$form->createView()]);
@@ -72,14 +66,14 @@ class ReportController extends AbstractController{
 		if(!$country){
 			return $this->redirect('countries');
 		}
-		$report = $reportRepository->findOneBy([
+		$reports = $reportRepository->findBy([
 			'country'=>$country,
 			'year'=>(string)$year
-		]);
-		if(!$report){
+		], ['id'=>'DESC']);
+		if(!$reports){
 			return $this->redirectToRoute('add_report', ['code'=>$country->getCode()]);
 		}
-		return $this->render("dashboard/reports/view.html.twig", ['bodyClass'=>'report', 'report'=>$report, 'country'=>$country, 'reports'=>$country->getYearlyReports()]);
+		return $this->render("dashboard/reports/view.html.twig", ['bodyClass'=>'report', 'currentReports'=>$reports, 'country'=>$country, 'reports'=>$country->getYearlyReports(), 'year'=>$year]);
 	}
 
 	/**
@@ -102,7 +96,7 @@ class ReportController extends AbstractController{
 			$manager->persist($report);
 			$manager->flush();
 
-			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->render("dashboard/reports/add_laboratory.html.twig", ['bodyClass'=>'add_laboratory_to_report', 'report'=>$report, 'form'=>$form->createView()]);
@@ -132,7 +126,7 @@ class ReportController extends AbstractController{
 			$manager->persist($item);
 			$manager->flush();
 
-			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->render("dashboard/reports/add_adulterant.html.twig", ['bodyClass'=>'add_adulterant_to_report', 'report'=>$report, 'form'=>$form->createView()]);
@@ -141,7 +135,7 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/item/{uuid}/edit", name="edit_adulterant_in_report")
 	 */
-	public function editAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository){
+	public function editAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository, UuidEncoder $encoder){
 		$item = $reportLineItemRepository->findOneByEncodedUuid($uuid);
 		if(!$item){
 			return $this->redirectToRoute('countries');
@@ -158,7 +152,7 @@ class ReportController extends AbstractController{
 			$manager->persist($item);
 			$manager->flush();
 
-			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->render("dashboard/reports/edit_adulterant.html.twig", ['bodyClass'=>'add_adulterant_to_report', 'report'=>$report, 'item'=>$item, 'form'=>$form->createView()]);
@@ -167,14 +161,14 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/item/{uuid}/delete", name="delete_adulterant_in_report")
 	 */
-	public function deleteAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository){
+	public function deleteAdulterant(string $uuid, Request $request, ReportLineItemRepository $reportLineItemRepository, UuidEncoder $encoder){
 		$item = $reportLineItemRepository->findOneByEncodedUuid($uuid);
 		if($item){
 			$report = $item->getReport();
 			$manager = $this->getDoctrine()->getManager();
 			$manager->remove($item);
 			$manager->flush();
-			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->redirectToRoute('countries');
@@ -183,14 +177,14 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/download/{uuid}/delete", name="delete_download")
 	 */
-	public function deleteDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository){
+	public function deleteDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository, UuidEncoder $encoder){
 		$item = $fileDownloadRepository->findOneByEncodedUuid($uuid);
 		if($item){
 			$report = $item->getYearlyReport();
 			$manager = $this->getDoctrine()->getManager();
 			$manager->remove($item);
 			$manager->flush();
-			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->redirectToRoute('countries');
@@ -231,7 +225,7 @@ class ReportController extends AbstractController{
 				$manager->flush();
 			}
 
-			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->render("dashboard/reports/add_download.html.twig", ['bodyClass'=>'add_download_to_report', 'report'=>$report, 'form'=>$form->createView()]);
@@ -266,7 +260,7 @@ class ReportController extends AbstractController{
 				$manager->flush();
 			}
 
-			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->render("dashboard/reports/add_excel.html.twig", ['bodyClass'=>'add_excel_to_report', 'report'=>$report, 'form'=>$form->createView()]);
@@ -275,7 +269,7 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/download/{uuid}/edit", name="edit_download_in_report")
 	 */
-	public function editDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository, FileUpload $fileUploadService){
+	public function editDownload(string $uuid, Request $request, FileDownloadRepository $fileDownloadRepository, FileUpload $fileUploadService, UuidEncoder $encoder){
 		$download = $fileDownloadRepository->findOneByEncodedUuid($uuid);
 		if(!$download){
 			return $this->redirectToRoute('countries');
@@ -306,7 +300,7 @@ class ReportController extends AbstractController{
 				$manager->flush();
 			}
 
-			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->render("dashboard/reports/edit_download.html.twig", ['bodyClass'=>'edit_download_in_report', 'report'=>$report, 'download'=>$download, 'form'=>$form->createView()]);
@@ -315,7 +309,7 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/excel/{uuid}/edit", name="edit_excel_in_report")
 	 */
-	public function editExcel(string $uuid, Request $request, ExcelDataFileRepository $excelRepository, FileUpload $fileUploadService){
+	public function editExcel(string $uuid, Request $request, ExcelDataFileRepository $excelRepository, FileUpload $fileUploadService, UuidEncoder $encoder){
 		/**
 		 * @var ExcelDataFile|null
 		 */
@@ -342,7 +336,7 @@ class ReportController extends AbstractController{
 			$manager->persist($excel);
 			$manager->flush();
 
-			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 		}
 
 		return $this->render("dashboard/reports/edit_excel.html.twig", ['bodyClass'=>'edit_excel_in_report', 'report'=>$report, 'excel'=>$excel, 'form'=>$form->createView()]);
@@ -351,7 +345,7 @@ class ReportController extends AbstractController{
 	/**
 	 * @Route("/report/excel/{uuid}/delete", name="delete_excel")
 	 */
-	public function deleteExcel(string $uuid, ExcelDataFileRepository $excelRepository){
+	public function deleteExcel(string $uuid, ExcelDataFileRepository $excelRepository, UuidEncoder $encoder){
 		/**
 		 * @var ExcelDataFile|null
 		 */
@@ -368,7 +362,7 @@ class ReportController extends AbstractController{
 		$manager->remove($excel->getFile());
 		$manager->flush();
 
-		return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear()]);
+		return $this->redirectToRoute('report', ['code'=>$report->getCountry()->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_{$encoder->encode($report->getUuid())}"]);
 	}
 
 	/**
@@ -392,7 +386,7 @@ class ReportController extends AbstractController{
 			$manager->persist($report);
 			$manager->flush();
 
-			return $this->redirectToRoute('report', ['code'=>$country->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute('report', ['code'=>$country->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->render("dashboard/reports/edit.html.twig", ['bodyClass'=>'add_report', 'report'=>$report, 'form'=>$form->createView()]);
@@ -455,7 +449,7 @@ class ReportController extends AbstractController{
 					return $response;
 				}
 			}
-			return $this->redirectToRoute("report", ['code'=>$country->getCode(), 'year'=>$report->getYear()]);
+			return $this->redirectToRoute("report", ['code'=>$country->getCode(), 'year'=>$report->getYear(), '_fragment'=>"report_$uuid"]);
 		}
 
 		return $this->redirectToRoute("countries");

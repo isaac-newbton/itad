@@ -21,14 +21,18 @@
 
 		<div class="report_tabs_container">
 			{% if reports is not empty %}
+				{% set years = [] %}
 				{% for r in reports %}
-					<div class="tab{{ r.year == report.year ? ' active' : '' }}">
-						{% if r.year == report.year %}
-							{{ r.year }}
-						{% else %}
-							<a href="{{ path('report', {code:country.code, year:r.year}) }}">{{ r.year }}</a>
-						{% endif %}
-					</div>
+					{% if year not in years %}
+						<div class="tab{{ r.year == year ? ' active' : '' }}">
+							{% if r.year == year %}
+								{{ r.year }}
+							{% else %}
+								<a href="{{ path('report', {code:country.code, year:r.year}) }}">{{ r.year }}</a>
+							{% endif %}
+							{% set years = years|merge([year]) %}
+						</div>
+					{% endif %}
 				{% endfor %}
 			{% endif %}
 			{% if is_granted('ROLE_ADMIN') %}
@@ -38,165 +42,172 @@
 			{% endif %}
 		</div>
 		<div class="report_details">
-			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('edit_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Report</a>
-			{% endif %}
-			<div class="laboratories">
-				<h2>Participating Laboratories</h2>
-				{% if report.participatingLaboratories is not empty %}
-					<ul>
-						{% for laboratory in report.participatingLaboratories %}
-							<li>{{ laboratory.name }}</li>
-						{% endfor %}
-					</ul>
-				{% else %}
-					<p>No data yet</p>
-				{% endif %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('add_laboratory_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Laboratories</a>
-				{% endif %}
-			</div>
-			{% if report.description %}
-				<div class="description">
-					<h2>Description</h2>
-					{{ report.description|raw }}
-				</div>
-			{% endif %}
-			<div class="adulterants">
-				<h2>Total Adulterants by Year</h2>
-				{% if report.reportLineItems is not empty %}
-					<p>
-						<a href="{{ path('download_report', {uuid:uuid_encode(report.uuid)}) }}">Download as CSV</a>
-					</p>
-					{% set itemsRendered = 0 %}
-					<ul id="adulterants_list">
-						{% for item in report.reportLineItems %}
-							<li class="adulterant_line_item{{ (itemsRendered >= 4) ? ' hide adulterant_hide_on_toggle' : '' }}">
-								<div class="adulterant">
-									{{ item.adulterant.name }}
-								</div>
-								<div class="percentage">
-									{{ item.value }}%
-								</div>
-								{% if is_granted('ROLE_ADMIN') %}
-									<div class="delete_actions">
-										<a href="{{ path('edit_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button">Edit</a>
-										<a href="{{ path('delete_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button danger">Delete</a>
-									</div>
-								{% endif %}
-							</li>
-							{% set itemsRendered = itemsRendered + 1 %}
-						{% endfor %}
-					</ul>
-					{% if itemsRendered > 4 %}
-						<div class="show_more_container">
-							<a id="show_more_adulterants" href="#adulterants_list" data-toggle="off">Show More &#x1F863;</a>
+			{% for report in currentReports %}
+				<div class="single_report_container" id="report_{{ uuid_encode(report.uuid) }}">
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('edit_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Report</a>
+					{% endif %}
+					<div class="laboratories">
+						<h2>Participating Laboratories</h2>
+						{% if report.participatingLaboratories is not empty %}
+							<ul>
+								{% for laboratory in report.participatingLaboratories %}
+									<li>{{ laboratory.name }}</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<p>No data yet</p>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('add_laboratory_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Edit Laboratories</a>
+						{% endif %}
+					</div>
+					{% if report.description %}
+						<div class="description">
+							<h2>Description</h2>
+							{{ report.description|raw }}
 						</div>
 					{% endif %}
-				{% else %}
-					<p>No data yet</p>
-				{% endif %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('add_adulterant_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add an Adulterant</a>
-				{% endif %}
-			</div>
-			<div class="downloads">
-				{% if report.fileDownloads is not empty %}
-					<h2>Downloads</h2>
-					<div class="downloads_list_container">
-						{% for download in report.fileDownloads %}
-							<div class="download">
-								<div class="thumbnail_container">
-									{% if download.thumbnail %}
-										<a href="{{ download.thumbnailImgSrc }}" target="_blank">
-											<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file }}" class="thumbnail">
-										</a>
-									{% endif %}
-								</div>
-								<div class="details_container">
-									{{ download }}
-									<a class="cta" href="{{ download.href }}" target="_blank" download>
-										Download PDF
-									</a>
-									{% if is_granted('ROLE_ADMIN') %}
-										<br>
-										<a href="{{ path('edit_download_in_report', {uuid:uuid_encode(download.uuid)}) }}">Edit download</a>
-										<br>
-										<a href="{{ path('edit_file_name', {uuid:uuid_encode(download.file.uuid)}) }}" target="_blank">Change filename</a>
-										<br>
-										<a href="{{ path('delete_download', {uuid:uuid_encode(download.uuid)}) }}" class="button danger">Delete Download</a>
-									{% endif %}
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<p>
-						<a href="{{ path('add_download_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add a Download</a>
-					</p>
-				{% endif %}
-			</div>
-			<div class="excel_data">
-				{% if report.excelDataFiles is not empty %}
-					<h2>Excel Data</h2>
-					<div class="excel_data_list_container">
-						{% for excel in report.excelDataFiles %}
-							{% if excel.user == app.user %}
-								<div class="excel">
-									<div class="thumbnail_container">
-										<img src="/images/xlsx-icon.png" alt="{{ excel.file }}" class="thumbnail">
-									</div>
-									<div class="details_container">
-										<a href="{{ excel.href }}" target="_blank" download>Download {{ excel }}</a>
+					<div class="adulterants">
+						<h2>Total Adulterants by Year</h2>
+						{% if report.reportLineItems is not empty %}
+							<p>
+								<a href="{{ path('download_report', {uuid:uuid_encode(report.uuid)}) }}">Download as CSV</a>
+							</p>
+							{% set itemsRendered = 0 %}
+							<ul class="adulterants_list" id="adulterants_list_{{ uuid_encode(report.uuid) }}">
+								{% for item in report.reportLineItems %}
+									<li class="adulterant_line_item{{ (itemsRendered >= 4) ? ' hide adulterant_hide_on_toggle' : '' }}" data-report="{{ uuid_encode(report.uuid) }}">
+										<div class="adulterant">
+											{{ item.adulterant.name }}
+										</div>
+										<div class="percentage">
+											{{ item.value }}%
+										</div>
 										{% if is_granted('ROLE_ADMIN') %}
-											<div class="admin_actions">
-												<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
-												<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
+											<div class="delete_actions">
+												<a href="{{ path('edit_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button">Edit</a>
+												<a href="{{ path('delete_adulterant_in_report', {uuid:uuid_encode(item.uuid)}) }}" class="button danger">Delete</a>
 											</div>
 										{% endif %}
-									</div>
+									</li>
+									{% set itemsRendered = itemsRendered + 1 %}
+								{% endfor %}
+							</ul>
+							{% if itemsRendered > 4 %}
+								<div class="show_more_container">
+									<a class="show_more_adulterants" data-report="{{ uuid_encode(report.uuid) }}" href="#adulterants_list_{{ uuid_encode(report.uuid) }}" data-toggle="off">Show More &#x1F863;</a>
 								</div>
 							{% endif %}
-						{% endfor %}
+						{% else %}
+							<p>No data yet</p>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('add_adulterant_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add an Adulterant</a>
+						{% endif %}
 					</div>
-				{% endif %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<p>
-						<a href="{{ path('add_excel_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add Excel Data</a>
-					</p>
-				{% endif %}
-			</div>
-			{% if is_granted('ROLE_ADMIN') %}
-				<div class="delete_actions">
-					<a href="{{ path('delete_report', {uuid:uuid_encode(report.uuid)}) }}" class="button danger">Delete Report</a>
+					<div class="downloads">
+						{% if report.fileDownloads is not empty %}
+							<h2>Downloads</h2>
+							<div class="downloads_list_container">
+								{% for download in report.fileDownloads %}
+									<div class="download">
+										<div class="thumbnail_container">
+											{% if download.thumbnail %}
+												<a href="{{ download.thumbnailImgSrc }}" target="_blank">
+													<img src="{{ download.thumbnailImgSrc }}" alt="{{ download.file }}" class="thumbnail">
+												</a>
+											{% endif %}
+										</div>
+										<div class="details_container">
+											{{ download }}
+											<a class="cta" href="{{ download.href }}" target="_blank" download>
+												Download PDF
+											</a>
+											{% if is_granted('ROLE_ADMIN') %}
+												<br>
+												<a href="{{ path('edit_download_in_report', {uuid:uuid_encode(download.uuid)}) }}">Edit download</a>
+												<br>
+												<a href="{{ path('edit_file_name', {uuid:uuid_encode(download.file.uuid)}) }}" target="_blank">Change filename</a>
+												<br>
+												<a href="{{ path('delete_download', {uuid:uuid_encode(download.uuid)}) }}" class="button danger">Delete Download</a>
+											{% endif %}
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<p>
+								<a href="{{ path('add_download_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add a Download</a>
+							</p>
+						{% endif %}
+					</div>
+					<div class="excel_data">
+						{% if report.excelDataFiles is not empty %}
+							<h2>Excel Data</h2>
+							<div class="excel_data_list_container">
+								{% for excel in report.excelDataFiles %}
+									{% if excel.user == app.user %}
+										<div class="excel">
+											<div class="thumbnail_container">
+												<img src="/images/xlsx-icon.png" alt="{{ excel.file }}" class="thumbnail">
+											</div>
+											<div class="details_container">
+												<a href="{{ excel.href }}" target="_blank" download>Download {{ excel }}</a>
+												{% if is_granted('ROLE_ADMIN') %}
+													<div class="admin_actions">
+														<a href="{{ path('edit_excel_in_report', {uuid:uuid_encode(excel.uuid)}) }}">Edit Excel File</a>
+														<a href="{{ path('delete_excel', {uuid:uuid_encode(excel.uuid)}) }}" class="danger">Delete Excel File</a>
+													</div>
+												{% endif %}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<p>
+								<a href="{{ path('add_excel_to_report', {uuid:uuid_encode(report.uuid)}) }}" class="button">Add Excel Data</a>
+							</p>
+						{% endif %}
+					</div>
+					{% if is_granted('ROLE_ADMIN') %}
+						<div class="delete_actions">
+							<a href="{{ path('delete_report', {uuid:uuid_encode(report.uuid)}) }}" class="button danger">Delete Report</a>
+						</div>
+					{% endif %}
 				</div>
-			{% endif %}
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		let showMore = document.getElementById('show_more_adulterants')
+		let showMore = document.getElementsByClassName('show_more_adulterants')
 		let adulterantsLineItems = document.getElementsByClassName('adulterant_hide_on_toggle')
 		if(showMore){
-			showMore.addEventListener('click', function(e){
-				if(showMore.dataset.toggle=='on'){
-					showMore.dataset.toggle = 'off'
-					showMore.innerHTML = 'Show More &#x1F863;'
-				}else{
-					showMore.dataset.toggle = 'on'
-					showMore.innerHTML = 'Show Less &#x1F861;'
-				}
-				for(var i = 0; i < adulterantsLineItems.length; i++){
-					if(showMore.dataset.toggle=='on'){
-						adulterantsLineItems[i].classList.remove('hide')
+			for(let n of showMore){
+				n.addEventListener('click', function(e){
+					if(n.dataset.toggle=='on'){
+						n.dataset.toggle = 'off'
+						n.innerHTML = 'Show More &#x1F863;'
 					}else{
-						adulterantsLineItems[i].classList.add('hide')
+						n.dataset.toggle = 'on'
+						n.innerHTML = 'Show Less &#x1F861;'
 					}
-				}
-			})
+					let lineItems = document.querySelectorAll(`.adulterant_hide_on_toggle[data-report="${n.dataset.report}"]`)
+					for(var i = 0; i < lineItems.length; i++){
+						if(n.dataset.toggle=='on'){
+							lineItems[i].classList.remove('hide')
+						}else{
+							lineItems[i].classList.add('hide')
+						}
+					}
+				})
+			}
 		}
 	</script>
 
