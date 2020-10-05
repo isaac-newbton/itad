@@ -23,7 +23,7 @@
 			{% if reports is not empty %}
 				{% set years = [] %}
 				{% for r in reports %}
-					{% if year not in years %}
+					{% if r.year not in years %}
 						<div class="tab{{ r.year == year ? ' active' : '' }}">
 							{% if r.year == year %}
 								{{ r.year }}
