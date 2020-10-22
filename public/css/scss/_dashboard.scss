@@ -630,7 +630,7 @@
 		flex-wrap:nowrap;
 
 		.adulterant_image_container{
-			max-width:20rem;
+			width:400px;
 
 			img{
 				display:block;
@@ -642,6 +642,10 @@
 
 		.adulterant_properties_container{
 			flex-grow:1;
+		}
+
+		@media(max-width:1024px){
+			flex-direction:column;
 		}
 	}
 
