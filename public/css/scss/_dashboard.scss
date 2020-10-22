@@ -250,6 +250,16 @@
 			color:$color_textLightGrey;
 		}
 
+		.report_links_container{
+			padding-bottom:15px;
+			margin-bottom:30px;
+			border-bottom:1px solid $color_inputBorder;
+
+			&>span{
+				font-weight:bold;
+			}
+		}
+
 		.single_report_container{
 
 			&:not(:last-child){

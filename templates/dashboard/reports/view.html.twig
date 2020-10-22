@@ -43,6 +43,24 @@
 		</div>
 
 		<div class="report_details">
+			{% if 1 < currentReports|length %}
+				{% set lastReportUuid = (currentReports|last).uuid %}
+				<div class="report_links_container">
+					<span>Jump To:</span>
+					{% for report in currentReports %}
+						<a href="#report_{{ uuid_encode(report.uuid) }}">
+							{% if report.participatingLaboratories is not empty %}
+								{{ (report.participatingLaboratories|first).name }}
+							{% else %}
+								Report from {{ report.year }}
+							{% endif %}
+						</a>
+						{% if report.uuid != lastReportUuid %}
+							,&#32;
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
 			{% for report in currentReports %}
 				<div class="single_report_container" id="report_{{ uuid_encode(report.uuid) }}">
 					{% if is_granted('ROLE_ADMIN') %}
