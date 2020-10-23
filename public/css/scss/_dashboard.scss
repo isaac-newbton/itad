@@ -640,7 +640,7 @@
 		flex-wrap:nowrap;
 
 		.adulterant_image_container{
-			width:400px;
+			flex: 0 0 300px;
 
 			img{
 				display:block;
