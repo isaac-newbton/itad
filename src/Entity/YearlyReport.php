@@ -52,6 +52,11 @@ class YearlyReport
      */
     private $excelDataFiles;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $usState;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -212,6 +217,18 @@ class YearlyReport
                 $excelDataFile->setYearlyReport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUsState(): ?string
+    {
+        return $this->usState;
+    }
+
+    public function setUsState(?string $usState): self
+    {
+        $this->usState = $usState;
 
         return $this;
     }

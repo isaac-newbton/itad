@@ -14,6 +14,7 @@ use App\Form\ReportLineItemType;
 use App\Form\YearlyReportDownloadType;
 use App\Form\YearlyReportLaboratoriesType;
 use App\Form\YearlyReportType;
+use App\Form\YearlyReportUSType;
 use App\Repository\AdulterantRepository;
 use App\Repository\CountryRepository;
 use App\Repository\ExcelDataFileRepository;
@@ -41,7 +42,7 @@ class ReportController extends AbstractController{
 			return $this->redirect('countries');
 		}
 
-		$form = $this->createForm(YearlyReportType::class, $report);
+		$form = $this->createForm(('US'==$country->getCode() || 'USA'==$country->getCode()) ? YearlyReportUSType::class : YearlyReportType::class, $report);
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
 
@@ -375,7 +376,7 @@ class ReportController extends AbstractController{
 		}
 
 		$country = $report->getCountry();
-		$form = $this->createForm(YearlyReportType::class, $report);
+		$form = $this->createForm(('US'==$country->getCode() || 'USA'==$country->getCode()) ? YearlyReportUSType::class : YearlyReportType::class, $report);
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid()){
 
