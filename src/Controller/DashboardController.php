@@ -18,7 +18,13 @@ class DashboardController extends AbstractController{
 	/**
 	 * @Route("/dashboard", name="dashboard")
 	 */
-	public function dashboard(CountryRepository $countryRepository){
+	public function dashboard(CountryRepository $countryRepository, Request $request){
+		$user = $this->getUser();
+        $user->setLastLoginDt(new \DateTime());
+		$user->setLastLoginIP($request->getClientIp());
+		$manager = $this->getDoctrine()->getManager();
+        $manager->persist($user);
+        $manager->flush();
 		return $this->render("dashboard/dashboard.html.twig", ['bodyClass'=>'dashboard']);
 	}
 

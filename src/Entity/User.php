@@ -32,6 +32,16 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLoginDt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastLoginIP;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -108,5 +118,29 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getLastLoginDt(): ?\DateTimeInterface
+    {
+        return $this->lastLoginDt;
+    }
+
+    public function setLastLoginDt(?\DateTimeInterface $lastLoginDt): self
+    {
+        $this->lastLoginDt = $lastLoginDt;
+
+        return $this;
+    }
+
+    public function getLastLoginIP(): ?string
+    {
+        return $this->lastLoginIP;
+    }
+
+    public function setLastLoginIP(?string $lastLoginIP): self
+    {
+        $this->lastLoginIP = $lastLoginIP;
+
+        return $this;
     }
 }
